@@ -7,6 +7,15 @@ export let character = {
   gravity: 0.6,
   onGround: false,
 
+  init(floorY, width) {
+    this.x = width / 2;
+    this.y = floorY - this.h;
+    this.vy = 0;
+    this.gravity = 0.6;
+    this.jumpStrength = -20;
+    this.maxVy = 15;
+  },
+
   draw() {
     fill(200, 180, 0);
     strokeWeight(1);
