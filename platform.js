@@ -1,6 +1,6 @@
 export let platform = {
-  x: 250,
-  y: 250,
+  x: 20,
+  y: 50,
   w: 80,
   h: 20,
 
