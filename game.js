@@ -42,16 +42,12 @@ function draw() {
     if (p.move) p.move();
   }
 
-  // Physics and collisions
   gravity.apply(character);
   gravity.handleFloorCollision(character, floorY);
   for (const p of platforms) gravity.handlePlatformCollision(character, p);
 
   movement.apply(character);
 
-  line(0, 700, 600, 700);
-
   platformGenerator.generatePlatforms(character.y, width, platforms);
   platforms = platformGenerator.cleanPlatforms(platforms, 0);
 }
-
