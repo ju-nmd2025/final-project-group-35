@@ -2,15 +2,28 @@ import { character } from "./character.js";
 import { gravity } from "./gravity.js";
 import { movement } from "./movement.js";
 import { platformGenerator } from "./platformGenerator.js";
-import {
-  restartGame,
-  getFloorY,
-  getPlatforms,
-  setPlatforms,
-} from "./gameManager.js";
 
+let floorY = 700;
 let platforms;
-let floorY;
+
+function restartGame(width) {
+  character.init(floorY, width);
+  platformGenerator.init(floorY - 100);
+  platforms = platformGenerator.createInitialPlatforms(character, width);
+  return platforms;
+}
+
+function getFloorY() {
+  return floorY;
+}
+
+function setPlatforms(newPlatforms) {
+  platforms = newPlatforms;
+}
+
+function getPlatforms() {
+  return platforms;
+}
 
 function setup() {
   createCanvas(600, 800);
@@ -18,18 +31,18 @@ function setup() {
   platforms = restartGame(width);
 }
 
-// Game restart logic is now in gameManager.js
-
 function draw() {
   background(100, 100, 100);
 
-  // Camera logic removed
+  if (!Array.isArray(platforms)) platforms = [];
+
   character.draw(character.y);
   for (const p of platforms) {
     p.draw(p.y);
     if (p.move) p.move();
   }
 
+  // Physics and collisions
   gravity.apply(character);
   gravity.handleFloorCollision(character, floorY);
   for (const p of platforms) gravity.handlePlatformCollision(character, p);
@@ -40,15 +53,5 @@ function draw() {
 
   platformGenerator.generatePlatforms(character.y, width, platforms);
   platforms = platformGenerator.cleanPlatforms(platforms, 0);
-  setPlatforms(platforms);
 }
 
-function keyPressed() {
-  if (key === "r") {
-    platforms = restartGame(width);
-    setPlatforms(platforms);
-  }
-  if (key === " " && character.y + character.h >= floorY) {
-    character.vy = character.jumpStrength;
-  }
-}
