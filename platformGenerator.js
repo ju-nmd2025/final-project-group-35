@@ -1,18 +1,17 @@
 import { platform } from "./platform.js";
 
 export let platformGenerator = {
-  // width/height used when creating platform objects
   platformWidth: 100,
   platformHeight: 20,
 
-  // horizontal spacing: platforms at similar heights will be at least this many pixels apart
+  // horizontal spacing
   minHorizontalGap: 40,
 
-  // vertical spacing range (pixels) between individual platforms
+  // vertical spacing range
   minVerticalGap: 100,
   maxVerticalGap: 240,
 
-  // last Y where we generated platforms
+  // last Y-level
   lastPlatformY: null,
 
   init(startY) {
@@ -21,38 +20,38 @@ export let platformGenerator = {
 
   createInitialPlatforms(character, width) {
     let platforms = [];
-    // put a platform right under the character
+    //platform under character at y=700 (floor level)
     platforms.push({
       ...platform,
       x: character.x - this.platformWidth / 2,
-      y: character.y + character.h,
+      y: 700, // Fixed at floor level
       w: this.platformWidth,
       h: this.platformHeight,
       draw(screenY) {
         platform.draw.call(this, screenY);
       },
     });
-    // generate more above
+    // generate more
     this.generatePlatforms(character.y, width, platforms);
     return platforms;
   },
 
   generatePlatforms(characterY, width, platforms) {
-    // choose a starting x based on existing platforms
+    // choose a starting x
     let characterX = platforms.length > 0 ? platforms[0].x : width / 2;
-    // ensure we have a sensible lastPlatformY (init may have been missed)
+    // sensible lastPlatformY
     if (this.lastPlatformY == null) {
-      // start generation a bit above the character so we populate above
+      // generate above character
       this.lastPlatformY = characterY + 600;
     }
     let currentY = this.lastPlatformY;
 
-    // Keep generating until we've gone far enough above the character
+    // keep generating
     while (currentY > characterY - 400) {
-      // spawn a small batch
-      let numPlatforms = Math.floor(Math.random() * 6) + 3; // 3..8
+      // spawn batch
+      let numPlatforms = Math.floor(Math.random() * 9) + 5; // 3..8
       for (let i = 0; i < numPlatforms && currentY > characterY - 400; i++) {
-        // pick a random vertical gap for this platform
+        // random vertical gap
         let gap =
           this.minVerticalGap +
           Math.random() * (this.maxVerticalGap - this.minVerticalGap);
@@ -61,7 +60,7 @@ export let platformGenerator = {
         let minX = Math.max(0, characterX - 150);
         let maxX = Math.min(width - this.platformWidth, characterX + 150);
 
-        // try to find a non-overlapping x
+        // non-overlapping x
         let placed = false;
         let maxTries = 12;
         let tries = 0;
