@@ -8,8 +8,8 @@ export let character = {
   onGround: false,
 
   init(floorY, width) {
-    this.x = width / 2;
-    this.y = floorY - this.h;
+    this.x = width / 2 - this.w / 2; // Center horizontally
+    this.y = floorY - this.h - 50; // Start 50 pixels above the floor/platform
     this.vy = 0;
     this.gravity = 0.6;
     this.jumpStrength = -20;
