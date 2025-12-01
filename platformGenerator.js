@@ -85,7 +85,7 @@ export let platformGenerator = {
           });
 
           if(!overlaps){
-          const isDisappearing = Math.random() < 0.7;
+          const isDisappearing = Math.random() < 0.4;
             platforms.push({
               ...platform,
               x: candidateX,
@@ -107,57 +107,24 @@ export let platformGenerator = {
           tries++;
         }
 
-        // fallback placement
-        if (!placed) {
-          let fallbackX = minX + Math.random() * (maxX - minX);
-             const isDisappearing2 = Math.random() < 0.5;
-            platforms.push({
-              ...platform,
-              x: fallbackX  ,
-              y: platformY,
-              w: this.platformWidth,
-              h: this.platformHeight,
-              disappearing: isDisappearing2,
-              draw(screenY) {
-                push();
-                fill(isDisappearing2 ? "red" : "blue"); // red = disappearing, blue = permanent
-                rect(this.x, this.y, this.w, this.h);
-                pop();
-              },
-            });
-
-          if (!overlaps) {
-            platforms.push({
-              ...platform,
-              x: candidateX,
-              y: platformY,
-              w: this.platformWidth,
-              h: this.platformHeight,
-              disappearing: Math.random() < 0.5, // 40% chance
-              draw(screenY) {
-                platform.draw.call(this, screenY);
-              },
-            });
-            characterX = candidateX;
-            placed = true;
-            break;
-          }
-          tries++;
-        }
+        
 
         // fallback placement
         if (!placed) {
           let fallbackX = minX + Math.random() * (maxX - minX);
-          const isDisappearing = Math.random() < 0.5;
+          const isDisappearing = Math.random() < 0.4;
           platforms.push({
             ...platform,
             x: fallbackX,
             y: platformY,
             w: this.platformWidth,
             h: this.platformHeight,
-            disappearing: Math.random() < 0.4, // 40% chance
+            disappearing: isDisappearing,
             draw(screenY) {
-              platform.draw.call(this, screenY);
+              push();
+              fill(isDisappearing ? "red" : "blue"); // red = disappearing, blue = permanent
+              rect(this.x, this.y, this.w, this.h);
+              pop();
             },
           });
           characterX = fallbackX;

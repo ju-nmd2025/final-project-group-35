@@ -23,7 +23,9 @@ export let gravity = {
       character.vy = character.jumpStrength;
 
       if (platform.disappearing) {
+        console.log("Platform disappeared!");
         platform.toBeRemoved = true;
+     
       }
     }
   },

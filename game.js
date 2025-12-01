@@ -46,7 +46,7 @@ function draw() {
 
     if (!Array.isArray(platforms)) platforms = [];
 
-    platforms = platforms.filter((p) => !p.toBeRemoved);
+  
 
     character.draw(character.y);
     for (let p of platforms) {
@@ -56,6 +56,9 @@ function draw() {
 
     gravity.apply(character);
     for (let p of platforms) gravity.handlePlatformCollision(character, p);
+
+    platforms = platforms.filter((p) => !p.toBeRemoved);
+
 
     let onPlatform = false;
     for (let p of platforms) {
@@ -105,7 +108,7 @@ function movePlatforms() {
   if (!gameStarted || gameOver || !Array.isArray(platforms) || platforms.length === 0) return;
   if (typeof width !== "number" || typeof height !== "number") return;
 
-  const speed = character.y < 400 ? 4 : 0; // move platforms down only when character is near top
+  const speed = character.y < 400 ? 9 : 0; // move platforms down only when character is near top
   platforms.forEach((p) => {
     p.y += speed;
   });
@@ -114,7 +117,7 @@ function movePlatforms() {
   const topY = Math.min(...platforms.map((p) => p.y));
   for (let i = 0; i < platforms.length; i++) {
     const p = platforms[i];
-    if (p.y > height) {
+    if (p.y > height && p.y !== 700) {
       p.y = topY - (80 + Math.random() * 120);
       p.x = Math.random() * Math.max(0, width - (p.w || platformGenerator.platformWidth));
     }
