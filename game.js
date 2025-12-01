@@ -108,3 +108,14 @@ function mouseClicked() {
     }
   }
 }
+
+movePlatforms();
+setInterval(movePlatforms, 30);
+
+function movePlatforms(){
+  if (character.y < 200) {
+    platforms.forEach((platform) => {
+      platform.y += 5; // Move platforms down by 5 pixels
+    });
+  }
+}

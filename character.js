@@ -31,3 +31,5 @@ export let character = {
     circle(this.x + 460 / 8, this.y + 140 / 8, 20 / 8);
   },
 };
+
+

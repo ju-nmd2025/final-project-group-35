@@ -123,4 +123,7 @@ export let platformGenerator = {
   cleanPlatforms(platforms, cameraY) {
     return platforms.filter((p) => p.y > cameraY - 200);
   },
+
+
 };
+ 
