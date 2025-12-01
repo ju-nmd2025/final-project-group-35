@@ -38,13 +38,10 @@ function setup() {
 
 function draw() {
   if (!gameStarted) {
-    // Draw start screen
     startScreen.draw(width, height);
   } else if (gameOver) {
-    // Draw game over screen
     gameOverScreen.draw(width, height);
   } else {
-    // Draw game
     background(100, 100, 100);
 
     if (!Array.isArray(platforms)) platforms = [];
@@ -56,11 +53,8 @@ function draw() {
     }
 
     gravity.apply(character);
-
-    // Handle platform collisions FIRST
     for (let p of platforms) gravity.handlePlatformCollision(character, p);
 
-    // THEN check if character is on a platform
     let onPlatform = false;
     for (let p of platforms) {
       if (
@@ -74,11 +68,9 @@ function draw() {
       }
     }
 
-    // Game over if character passes floor level AND is not on a platform
     if (character.y + character.h > floorY + 5 && !onPlatform) {
       console.log("Game Over! Character fell off!");
       gameOver = true;
-      return; // Stop the game loop
     }
 
     movement.apply(character);
@@ -90,21 +82,17 @@ function draw() {
 
 function mouseClicked() {
   if (!gameStarted) {
-    // Start screen - check if start button was clicked
     if (startScreen.isButtonClicked(mouseX, mouseY)) {
       console.log("Start button clicked! Starting game...");
       gameStarted = true;
       gameOver = false;
-      // Initialize the game
       platforms = restartGame(width);
     }
   } else if (gameOver) {
-    // Game over screen - check if restart button was clicked
     if (gameOverScreen.isButtonClicked(mouseX, mouseY)) {
       console.log("Restart button clicked! Returning to start screen...");
       gameStarted = false;
       gameOver = false;
-      // Don't initialize game yet - wait for start screen
     }
   }
 }
