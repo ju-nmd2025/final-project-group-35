@@ -75,8 +75,7 @@ function draw() {
 
     movement.apply(character);
 
-    platformGenerator.generatePlatforms(character.y, width, platforms);
-    platforms = platformGenerator.cleanPlatforms(platforms, 0);
+    movePlatforms();
   }
 }
 
@@ -100,10 +99,34 @@ function mouseClicked() {
 movePlatforms();
 setInterval(movePlatforms, 30);
 
-function movePlatforms(){
-  if (character.y < 200) {
-    platforms.forEach((platform) => {
-      platform.y += 5; // Move platforms down by 5 pixels
-    });
+function movePlatforms() {
+  // only run while the game is active
+  if (!gameStarted || gameOver || !Array.isArray(platforms) || platforms.length === 0) return;
+  if (typeof width !== "number" || typeof height !== "number") return;
+
+  const speed = character.y < 300 ? 4 : 0; // move platforms down only when character is near top
+  platforms.forEach((p) => {
+    p.y += speed;
+  });
+
+  // recycle platforms that moved off the bottom by moving them above the highest platform
+  const topY = Math.min(...platforms.map((p) => p.y));
+  for (let i = 0; i < platforms.length; i++) {
+    const p = platforms[i];
+    if (p.y > height) {
+      p.y = topY - (80 + Math.random() * 120);
+      p.x = Math.random() * Math.max(0, width - (p.w || platformGenerator.platformWidth));
+    }
+  }
+
+  // ensure there are always platforms generated above the current top
+  // if the highest platform is below the generator threshold, tell the generator to extend upward
+  const generatorThreshold = character.y - 300;
+  if (topY > generatorThreshold) {
+    // make the generator start from the current top and add more above it
+    platformGenerator.lastPlatformY = topY;
+    platformGenerator.generatePlatforms(character.y, width, platforms);
+    // optionally trim any far-away platforms
+    platforms = platformGenerator.cleanPlatforms(platforms, 0);
   }
 }
