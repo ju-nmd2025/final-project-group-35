@@ -21,6 +21,10 @@ export let gravity = {
     ) {
       character.y = platform.y - character.h;
       character.vy = character.jumpStrength;
+
+      if (platform.disappearing) {
+        platform.toBeRemoved = true;
+      }
     }
   },
 };

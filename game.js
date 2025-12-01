@@ -46,6 +46,8 @@ function draw() {
 
     if (!Array.isArray(platforms)) platforms = [];
 
+    platforms = platforms.filter((p) => !p.toBeRemoved);
+
     character.draw(character.y);
     for (let p of platforms) {
       p.draw(p.y);
@@ -96,15 +98,14 @@ function mouseClicked() {
   }
 }
 
-movePlatforms();
-setInterval(movePlatforms, 30);
+
 
 function movePlatforms() {
   // only run while the game is active
   if (!gameStarted || gameOver || !Array.isArray(platforms) || platforms.length === 0) return;
   if (typeof width !== "number" || typeof height !== "number") return;
 
-  const speed = character.y < 300 ? 4 : 0; // move platforms down only when character is near top
+  const speed = character.y < 400 ? 4 : 0; // move platforms down only when character is near top
   platforms.forEach((p) => {
     p.y += speed;
   });

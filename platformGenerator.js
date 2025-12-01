@@ -1,3 +1,4 @@
+import { character } from "./character.js";
 import { platform } from "./platform.js";
 
 export let platformGenerator = {
@@ -9,7 +10,7 @@ export let platformGenerator = {
 
   // vertical spacing range
   minVerticalGap: 100,
-  maxVerticalGap: 240,
+  maxVerticalGap: 200,
 
   // last Y-level
   lastPlatformY: null,
@@ -27,8 +28,12 @@ export let platformGenerator = {
       y: 700, // Fixed at floor level
       w: this.platformWidth,
       h: this.platformHeight,
+      disappearing: false,
       draw(screenY) {
-        platform.draw.call(this, screenY);
+       push();
+       fill ("blue");
+        rect(this.x, this.y, this.w, this.h);
+        pop();
       },
     });
     // generate more
@@ -79,6 +84,48 @@ export let platformGenerator = {
             );
           });
 
+          if(!overlaps){
+          const isDisappearing = Math.random() < 0.7;
+            platforms.push({
+              ...platform,
+              x: candidateX,
+              y: platformY,
+              w: this.platformWidth,
+              h: this.platformHeight,
+              disappearing: isDisappearing,
+              draw(screenY) {
+                push();
+                fill(isDisappearing ? "red" : "blue"); // red = disappearing, blue = permanent
+                rect(this.x, this.y, this.w, this.h);
+                pop();
+              },
+            });
+            characterX = candidateX;
+            placed = true;
+            break;
+          }
+          tries++;
+        }
+
+        // fallback placement
+        if (!placed) {
+          let fallbackX = minX + Math.random() * (maxX - minX);
+             const isDisappearing2 = Math.random() < 0.5;
+            platforms.push({
+              ...platform,
+              x: fallbackX  ,
+              y: platformY,
+              w: this.platformWidth,
+              h: this.platformHeight,
+              disappearing: isDisappearing2,
+              draw(screenY) {
+                push();
+                fill(isDisappearing2 ? "red" : "blue"); // red = disappearing, blue = permanent
+                rect(this.x, this.y, this.w, this.h);
+                pop();
+              },
+            });
+
           if (!overlaps) {
             platforms.push({
               ...platform,
@@ -86,6 +133,7 @@ export let platformGenerator = {
               y: platformY,
               w: this.platformWidth,
               h: this.platformHeight,
+              disappearing: Math.random() < 0.5, // 40% chance
               draw(screenY) {
                 platform.draw.call(this, screenY);
               },
@@ -100,12 +148,14 @@ export let platformGenerator = {
         // fallback placement
         if (!placed) {
           let fallbackX = minX + Math.random() * (maxX - minX);
+          const isDisappearing = Math.random() < 0.5;
           platforms.push({
             ...platform,
             x: fallbackX,
             y: platformY,
             w: this.platformWidth,
             h: this.platformHeight,
+            disappearing: Math.random() < 0.4, // 40% chance
             draw(screenY) {
               platform.draw.call(this, screenY);
             },
@@ -126,4 +176,5 @@ export let platformGenerator = {
 
 
 };
+
  

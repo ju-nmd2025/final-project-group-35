@@ -4,14 +4,14 @@ export let character = {
   w: 80,
   h: 75,
   vy: 0,
-  gravity: 0.6,
+  gravity: 0.5,
   onGround: false,
 
   init(floorY, width) {
     this.x = width / 2 - this.w / 2; // Center horizontally
     this.y = floorY - this.h - 50; // Start 50 pixels above the floor/platform
     this.vy = 0;
-    this.gravity = 0.6;
+    this.gravity = 0.8;
     this.jumpStrength = -20;
     this.maxVy = 15;
   },
