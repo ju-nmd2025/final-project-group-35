@@ -23,8 +23,8 @@ export let gravity = {
       character.vy = character.jumpStrength;
 
       if (platform.disappearing) {
-        console.log("Platform disappeared!");
-        platform.toBeRemoved = true;
+        console.log("Platform disappeared!", Math.round(platform.x), Math.round(platform.y));
+        platform.toRemove = true;
      
       }
     }
