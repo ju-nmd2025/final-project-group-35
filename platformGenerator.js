@@ -54,7 +54,7 @@ export let platformGenerator = {
     // keep generating
     while (currentY > characterY - 400) {
       // spawn batch
-      let numPlatforms = Math.floor(Math.random() * 9) + 5; // 3..8
+      let numPlatforms = Math.floor(Math.random() * 3) + 2; // 2..4
       for (let i = 0; i < numPlatforms && currentY > characterY - 400; i++) {
         // random vertical gap
         let gap =
@@ -71,18 +71,30 @@ export let platformGenerator = {
         let tries = 0;
         while (!placed && tries < maxTries) {
           let candidateX = minX + Math.random() * (maxX - minX);
+          
           let overlaps = platforms.some((p) => {
-            if (Math.abs(p.y - platformY) > this.platformHeight + 10)
-              return false;
-            let pLeft = p.x;
-            let pRight = p.x + (p.w || this.platformWidth);
-            let cLeft = candidateX;
-            let cRight = candidateX + this.platformWidth;
-            return !(
-              cRight + this.minHorizontalGap <= pLeft ||
-              cLeft >= pRight + this.minHorizontalGap
-            );
+           const verticalDist = Math.abs(p.y - platformY);
+           // far apart vertically -> no overlap
+           if (verticalDist > this.maxVerticalGap) return false;
+           const pLeft = p.x;
+            const pRight = p.x + (p.w || this.platformWidth);
+            const cLeft = candidateX;
+            const cRight = candidateX + this.platformWidth;
+
+           const verticalBuffer = this.platformHeight + 20; // treat this as "very close"
+            if (verticalDist < verticalBuffer) {
+              // require horizontal gap when very close vertically
+              return !(cRight + this.minHorizontalGap <= pLeft || cLeft >= pRight + this.minHorizontalGap);
+            }
+
+            // if moderately close vertically, just avoid direct horizontal overlap
+            if (verticalDist < this.minVerticalGap) {
+              return !(cRight <= pLeft || cLeft >= pRight);
+            }
+
+            return false;
           });
+
 
           if(!overlaps){
           const isDisappearing = Math.random() < 0.4;

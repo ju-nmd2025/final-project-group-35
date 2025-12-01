@@ -57,7 +57,7 @@ function draw() {
     gravity.apply(character);
     for (let p of platforms) gravity.handlePlatformCollision(character, p);
 
-    platforms = platforms.filter((p) => !p.toBeRemoved);
+    platforms = platforms.filter((p) => !p.toRemove);
 
 
     let onPlatform = false;
@@ -73,7 +73,7 @@ function draw() {
       }
     }
 
-    if (character.y + character.h > floorY + 5 && !onPlatform) {
+    if (character.y + character.h > height + 5 && !onPlatform) {
       console.log("Game Over! Character fell off!");
       gameOver = true;
     }
