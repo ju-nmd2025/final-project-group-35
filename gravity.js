@@ -18,15 +18,17 @@ export let gravity = {
       character.vy > 0 &&
       character.y + character.h >= platform.y &&
       character.y + character.h - character.vy < platform.y
-    ) {
-      character.y = platform.y - character.h;
-      character.vy = character.jumpStrength;
-
-      if (platform.disappearing) {
+    ) { 
+         if (platform.disappearing) {
         console.log("Platform disappeared!", Math.round(platform.x), Math.round(platform.y));
         platform.toRemove = true;
-     
-      }
+    
+
+      return;
+       }
+
+        character.y = platform.y - character.h;
+      character.vy = character.jumpStrength;
     }
   },
 };

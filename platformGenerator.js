@@ -29,6 +29,7 @@ export let platformGenerator = {
       w: this.platformWidth,
       h: this.platformHeight,
       disappearing: false,
+    
       draw(screenY) {
        push();
        fill ("blue");
@@ -97,7 +98,8 @@ export let platformGenerator = {
 
 
           if(!overlaps){
-          const isDisappearing = Math.random() < 0.4;
+          const isDisappearing = Math.random() < 0.25;
+         
             platforms.push({
               ...platform,
               x: candidateX,
@@ -105,6 +107,7 @@ export let platformGenerator = {
               w: this.platformWidth,
               h: this.platformHeight,
               disappearing: isDisappearing,
+             
               draw(screenY) {
                 push();
                 fill(isDisappearing ? "red" : "blue"); // red = disappearing, blue = permanent
@@ -124,7 +127,7 @@ export let platformGenerator = {
         // fallback placement
         if (!placed) {
           let fallbackX = minX + Math.random() * (maxX - minX);
-          const isDisappearing = Math.random() < 0.4;
+          const isDisappearing = Math.random() < 0.25;
           platforms.push({
             ...platform,
             x: fallbackX,

@@ -3,6 +3,7 @@ export let platform = {
   y: 50,
   w: 80,
   h: 20,
+  
 
   draw() {
     push();
