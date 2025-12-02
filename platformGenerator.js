@@ -10,7 +10,7 @@ export let platformGenerator = {
 
   // vertical spacing range
   minVerticalGap: 100,
-  maxVerticalGap: 200,
+  maxVerticalGap: 150,
 
   // last Y-level
   lastPlatformY: null,

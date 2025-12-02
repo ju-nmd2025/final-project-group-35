@@ -108,7 +108,7 @@ function movePlatforms() {
   if (!gameStarted || gameOver || !Array.isArray(platforms) || platforms.length === 0) return;
   if (typeof width !== "number" || typeof height !== "number") return;
 
-  const speed = character.y < 400 ? 9 : 0; // move platforms down only when character is near top
+  const speed = character.y < 300 ? 9 : 0; // move platforms down only when character is near top
   platforms.forEach((p) => {
     p.y += speed;
   });
