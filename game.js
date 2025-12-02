@@ -4,6 +4,9 @@ import { movement } from "./movement.js";
 import { platformGenerator } from "./platformGenerator.js";
 import { gameOverScreen } from "./gameOverScreen.js";
 import startScreen from "./startScreen.js";
+import { platform } from "./platform.js";
+
+
 
 // Game state
 let gameStarted = false;
@@ -12,10 +15,22 @@ let gameOver = false;
 let floorY = 700;
 let platforms;
 
+let score = 0;
+
+let maxAltitude = Infinity;
+const HIGH_SCORE_KEY = "highScore";
+let highScore = parseInt(localStorage.getItem(HIGH_SCORE_KEY)) || 0;
+
+
+
+
 function restartGame(width) {
   character.init(floorY, width);
   platformGenerator.init(floorY - 100);
   platforms = platformGenerator.createInitialPlatforms(character, width);
+
+  score = 0;
+  maxAltitude = character.y; 
   return platforms;
 }
 
@@ -40,13 +55,28 @@ function draw() {
   if (!gameStarted) {
     startScreen.draw(width, height);
   } else if (gameOver) {
+    if (score > highScore) {
+      try { localStorage.setItem(HIGH_SCORE_KEY, String(score)); } 
+      catch (e) {}
+    }
     gameOverScreen.draw(width, height);
+    
   } else {
     background(100, 100, 100);
+  
 
     if (!Array.isArray(platforms)) platforms = [];
 
-  
+    if (character.y < maxAltitude) maxAltitude = character.y;
+    score = Math.max (score, Math.floor(( floorY - maxAltitude) / 10));
+
+    push ();
+    fill (255);
+    textSize (30);
+    textAlign (LEFT, TOP);
+    text (`score: ${score}`, 12, 12);
+    text (`high score: ${highScore}`, 12, 36);
+    pop ();
 
     character.draw(character.y);
     for (let p of platforms) {
@@ -102,7 +132,6 @@ function mouseClicked() {
 }
 
 
-
 function movePlatforms() {
   // only run while the game is active
   if (!gameStarted || gameOver || !Array.isArray(platforms) || platforms.length === 0) return;
@@ -111,6 +140,7 @@ function movePlatforms() {
   const speed = character.y < 500 ? 6 : 0; // move platforms down only when character is near top
   platforms.forEach((p) => {
     p.y += speed;
+   
   });
 
   // recycle platforms that moved off the bottom by moving them above the highest platform
