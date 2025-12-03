@@ -6,11 +6,11 @@ export let platformGenerator = {
   platformHeight: 20,
 
   // horizontal spacing
-  minHorizontalGap: 40,
+  minHorizontalGap: 20,
 
   // vertical spacing range
-  minVerticalGap: 100,
-  maxVerticalGap: 150,
+  minVerticalGap: 70,
+  maxVerticalGap: 85,
 
   // last Y-level
   lastPlatformY: null,
@@ -82,7 +82,7 @@ export let platformGenerator = {
             const cLeft = candidateX;
             const cRight = candidateX + this.platformWidth;
 
-           const verticalBuffer = this.platformHeight + 20; // treat this as "very close"
+           const verticalBuffer = this.platformHeight + 10; // treat this as "very close"
             if (verticalDist < verticalBuffer) {
               // require horizontal gap when very close vertically
               return !(cRight + this.minHorizontalGap <= pLeft || cLeft >= pRight + this.minHorizontalGap);
@@ -98,7 +98,7 @@ export let platformGenerator = {
 
 
           if(!overlaps){
-          const isDisappearing = Math.random() < 0.25;
+          const isDisappearing = Math.random() < 0.15;
          
             platforms.push({
               ...platform,
@@ -127,7 +127,7 @@ export let platformGenerator = {
         // fallback placement
         if (!placed) {
           let fallbackX = minX + Math.random() * (maxX - minX);
-          const isDisappearing = Math.random() < 0.25;
+          const isDisappearing = Math.random() < 0.15;
           platforms.push({
             ...platform,
             x: fallbackX,

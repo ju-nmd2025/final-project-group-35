@@ -11,8 +11,8 @@ export let character = {
     this.x = width / 2 - this.w / 2; // Center horizontally
     this.y = floorY - this.h - 50; // Start 50 pixels above the floor/platform
     this.vy = 0;
-    this.gravity = 0.8;
-    this.jumpStrength = -20;
+    this.gravity = 1.5;
+    this.jumpStrength = -25;
     this.maxVy = 15;
   },
 

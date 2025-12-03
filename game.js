@@ -16,10 +16,8 @@ let floorY = 700;
 let platforms;
 
 let score = 0;
+let maxScore = 0;
 
-let maxAltitude = Infinity;
-const HIGH_SCORE_KEY = "highScore";
-let highScore = parseInt(localStorage.getItem(HIGH_SCORE_KEY)) || 0;
 
 
 
@@ -28,9 +26,6 @@ function restartGame(width) {
   character.init(floorY, width);
   platformGenerator.init(floorY - 100);
   platforms = platformGenerator.createInitialPlatforms(character, width);
-
-  score = 0;
-  maxAltitude = character.y; 
   return platforms;
 }
 
@@ -55,10 +50,8 @@ function draw() {
   if (!gameStarted) {
     startScreen.draw(width, height);
   } else if (gameOver) {
-    if (score > highScore) {
-      try { localStorage.setItem(HIGH_SCORE_KEY, String(score)); } 
-      catch (e) {}
-    }
+    
+    
     gameOverScreen.draw(width, height);
     
   } else {
@@ -67,16 +60,8 @@ function draw() {
 
     if (!Array.isArray(platforms)) platforms = [];
 
-    if (character.y < maxAltitude) maxAltitude = character.y;
-    score = Math.max (score, Math.floor(( floorY - maxAltitude) / 10));
 
-    push ();
-    fill (255);
-    textSize (30);
-    textAlign (LEFT, TOP);
-    text (`score: ${score}`, 12, 12);
-    text (`high score: ${highScore}`, 12, 36);
-    pop ();
+  
 
     character.draw(character.y);
     for (let p of platforms) {
@@ -111,6 +96,11 @@ function draw() {
     movement.apply(character);
 
     movePlatforms();
+    updateScore();
+   fill ("black");
+    textSize(24);
+    text(score, 30, 20);
+  
   }
 }
 
@@ -137,7 +127,7 @@ function movePlatforms() {
   if (!gameStarted || gameOver || !Array.isArray(platforms) || platforms.length === 0) return;
   if (typeof width !== "number" || typeof height !== "number") return;
 
-  const speed = character.y < 500 ? 6 : 0; // move platforms down only when character is near top
+  const speed = character.y < 600 ? 9 : 0; // move platforms down only when character is near top
   platforms.forEach((p) => {
     p.y += speed;
    
@@ -148,7 +138,9 @@ function movePlatforms() {
   for (let i = 0; i < platforms.length; i++) {
     const p = platforms[i];
     if (p.y > height && p.y !== 700) {
-      p.y = topY - (80 + Math.random() * 120);
+      const minSpawnY = Math.max (-200, topY -150);
+      const maxSpawnY = topY -90;
+      p.y = minSpawnY + Math.random() * (maxSpawnY - minSpawnY);
       p.x = Math.random() * Math.max(0, width - (p.w || platformGenerator.platformWidth));
     }
   }
@@ -163,4 +155,18 @@ function movePlatforms() {
     // optionally trim any far-away platforms
     platforms = platformGenerator.cleanPlatforms(platforms, 0);
   }
+}
+
+function updateScore() {
+  let points = Math.floor (50*Math.random());
+  if (character.y < 0) {
+    maxScore += points;
+    if (score < maxScore) {
+      score = maxScore;
+    }
+  }
+  else if (character.y >=0) {
+    maxScore -= score;
+  
+ }
 }
