@@ -6,7 +6,7 @@ export let platformGenerator = {
   platformHeight: 20,
 
   // horizontal spacing
-  minHorizontalGap: 20,
+  minHorizontalGap: 40,
 
   // vertical spacing range
   minVerticalGap: 70,
@@ -98,7 +98,7 @@ export let platformGenerator = {
 
 
           if(!overlaps){
-          const isDisappearing = Math.random() < 0.15;
+          const isDisappearing = Math.random() < 0.20;
          
             platforms.push({
               ...platform,
@@ -127,7 +127,7 @@ export let platformGenerator = {
         // fallback placement
         if (!placed) {
           let fallbackX = minX + Math.random() * (maxX - minX);
-          const isDisappearing = Math.random() < 0.15;
+          const isDisappearing = Math.random() < 0.20;
           platforms.push({
             ...platform,
             x: fallbackX,

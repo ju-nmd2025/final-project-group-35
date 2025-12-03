@@ -18,6 +18,8 @@ let platforms;
 let score = 0;
 let maxScore = 0;
 
+let prevY = null;
+
 
 
 
@@ -26,8 +28,13 @@ function restartGame(width) {
   character.init(floorY, width);
   platformGenerator.init(floorY - 100);
   platforms = platformGenerator.createInitialPlatforms(character, width);
+
+  score= 0;
+prevY = character.y;
   return platforms;
 }
+
+
 
 function getFloorY() {
   return floorY;
@@ -158,15 +165,11 @@ function movePlatforms() {
 }
 
 function updateScore() {
-  let points = Math.floor (50*Math.random());
-  if (character.y < 0) {
-    maxScore += points;
-    if (score < maxScore) {
-      score = maxScore;
-    }
-  }
-  else if (character.y >=0) {
-    maxScore -= score;
-  
- }
+if (prevY === null) prevyY = character.y;
+
+const deltaUp = Math.max (0, prevY - character.y);
+
+score += Math.floor (deltaUp);
+
+prevY = character.y;
 }
