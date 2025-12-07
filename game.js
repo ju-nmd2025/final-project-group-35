@@ -57,6 +57,10 @@ function draw() {
   if (!gameStarted) {
     startScreen.draw(width, height);
   } else if (gameOver) {
+
+    if (score > maxScore) {
+      maxScore = score;
+    }
     
     
     gameOverScreen.draw(width, height);
@@ -165,7 +169,7 @@ function movePlatforms() {
 }
 
 function updateScore() {
-if (prevY === null) prevyY = character.y;
+if (prevY === null) prevY = character.y;
 
 const deltaUp = Math.max (0, prevY - character.y);
 

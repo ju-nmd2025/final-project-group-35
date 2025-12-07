@@ -124,6 +124,8 @@ export let platformGenerator = {
 
         
 
+        
+
         // fallback placement
         if (!placed) {
           let fallbackX = minX + Math.random() * (maxX - minX);
