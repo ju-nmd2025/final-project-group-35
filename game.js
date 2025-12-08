@@ -153,6 +153,11 @@ function movePlatforms() {
       const maxSpawnY = topY -90;
       p.y = minSpawnY + Math.random() * (maxSpawnY - minSpawnY);
       p.x = Math.random() * Math.max(0, width - (p.w || platformGenerator.platformWidth));
+
+      if (p.moving) {
+        p.originalX = p.x;
+        p.moveDirection = Math.random() < 0.5 ? 1 : -1;
+      }
     }
   }
 

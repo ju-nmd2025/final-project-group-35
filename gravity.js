@@ -20,12 +20,13 @@ export let gravity = {
       character.y + character.h - character.vy < platform.y
     ) { 
          if (platform.disappearing) {
-        console.log("Platform disappeared!", Math.round(platform.x), Math.round(platform.y));
+        console.log("Platform disappeared!");
         platform.toRemove = true;
     
 
       return;
        }
+       
 
         character.y = platform.y - character.h;
       character.vy = character.jumpStrength;

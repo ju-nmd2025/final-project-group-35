@@ -9,8 +9,8 @@ export let platformGenerator = {
   minHorizontalGap: 40,
 
   // vertical spacing range
-  minVerticalGap: 70,
-  maxVerticalGap: 85,
+  minVerticalGap: 80,
+  maxVerticalGap: 90,
 
   // last Y-level
   lastPlatformY: null,
@@ -29,18 +29,27 @@ export let platformGenerator = {
       w: this.platformWidth,
       h: this.platformHeight,
       disappearing: false,
+      moving: false,
+      isGreenMoving: false,
+      
     
       draw(screenY) {
        push();
        fill ("blue");
         rect(this.x, this.y, this.w, this.h);
         pop();
-      },
+        },
+        move(){
+          return;
+        }
+
     });
     // generate more
     this.generatePlatforms(character.y, width, platforms);
     return platforms;
   },
+
+  
 
   generatePlatforms(characterY, width, platforms) {
     // choose a starting x
@@ -98,7 +107,9 @@ export let platformGenerator = {
 
 
           if(!overlaps){
-          const isDisappearing = Math.random() < 0.20;
+          const isGreenMoving = Math.random() < 0.2;
+          const isDisappearing = !isGreenMoving && Math.random() < 0.2;
+          const isMoving = isGreenMoving 
          
             platforms.push({
               ...platform,
@@ -107,13 +118,37 @@ export let platformGenerator = {
               w: this.platformWidth,
               h: this.platformHeight,
               disappearing: isDisappearing,
+              moving : isMoving,
+              isGreenMoving: isGreenMoving,
+              moveDirection: 1,
+              originalX: candidateX,
+              moveSpeed: isMoving ? (1 + Math.random() * 2) : 0,
+              moveRange: isMoving ? (50 + Math.random() * 100) : 0,
              
               draw(screenY) {
                 push();
-                fill(isDisappearing ? "red" : "blue"); // red = disappearing, blue = permanent
+            if (this.isGreenMoving) {
+                  fill("green");
+                } else if (this.disappearing) {
+                  fill("red");
+                } else {
+                  fill("blue");
+                }
                 rect(this.x, this.y, this.w, this.h);
                 pop();
               },
+              move() {
+                if(!this.moving) return;
+                this.x += this.moveSpeed * this.moveDirection;
+                if (this.x > this.originalX + this.moveRange) {
+                  this.x = this.originalX + this.moveRange;
+                  this.moveDirection = -1;
+                }
+                if (this.x < this.originalX - this.moveRange) {
+                  this.x = this.originalX - this.moveRange;
+                  this.moveDirection = 1;
+                }
+              }
             });
             characterX = candidateX;
             placed = true;
@@ -129,7 +164,9 @@ export let platformGenerator = {
         // fallback placement
         if (!placed) {
           let fallbackX = minX + Math.random() * (maxX - minX);
-          const isDisappearing = Math.random() < 0.20;
+         const isGreenMoving = Math.random() < 0.2;
+          const isDisappearing = !isGreenMoving && Math.random() < 0.2;
+          const isMoving = isGreenMoving 
           platforms.push({
             ...platform,
             x: fallbackX,
@@ -137,11 +174,35 @@ export let platformGenerator = {
             w: this.platformWidth,
             h: this.platformHeight,
             disappearing: isDisappearing,
+             moving: isMoving,
+             isGreenMoving: isGreenMoving,
+             originalX: fallbackX,
+            moveDirection: 1,
+            moveSpeed: isMoving ? (1 + Math.random() * 2) : 0,
+            moveRange: isMoving ? (40 + Math.random() * 80) : 0,
             draw(screenY) {
-              push();
-              fill(isDisappearing ? "red" : "blue"); // red = disappearing, blue = permanent
+               push();
+              if (this.isGreenMoving) {
+                fill("green");
+              } else if (this.disappearing) {
+                fill("red");
+              } else {
+                fill("blue");
+              }
               rect(this.x, this.y, this.w, this.h);
               pop();
+            },
+             move() {
+              if (!this.moving) return;
+              this.x += this.moveSpeed * this.moveDirection;
+              if (this.x > this.originalX + this.moveRange) {
+                this.x = this.originalX + this.moveRange;
+                this.moveDirection = -1;
+              }
+              if (this.x < this.originalX - this.moveRange) {
+                this.x = this.originalX - this.moveRange;
+                this.moveDirection = 1;
+              }
             },
           });
           characterX = fallbackX;
