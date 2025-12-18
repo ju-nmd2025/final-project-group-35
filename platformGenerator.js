@@ -1,7 +1,7 @@
 import { character } from "./character.js";
 import { platform } from "./platform.js";
 
-export let platformGenerator = {
+export default class platformGenerator {
   platformWidth: 100,
   platformHeight: 20,
 

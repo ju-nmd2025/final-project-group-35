@@ -1,4 +1,4 @@
-export let movement = {
+export default class movement = {
   apply(character) {
     if (keyIsDown(LEFT_ARROW)) {
       character.x -= 10;

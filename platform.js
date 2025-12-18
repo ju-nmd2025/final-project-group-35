@@ -1,4 +1,4 @@
-export let platform = {
+export default class platform = {
   x: 20,
   y: 50,
   w: 80,

@@ -1,4 +1,4 @@
-export let character = {
+export default class character {
   x: 260,
   y: 250,
   w: 80,
@@ -14,7 +14,7 @@ export let character = {
     this.gravity = 1.5;
     this.jumpStrength = -25;
     this.maxVy = 15;
-  },
+  }
 
   draw() {
     fill(200, 180, 0);
@@ -29,7 +29,7 @@ export let character = {
     fill(0);
     circle(this.x + 160 / 8, this.y + 140 / 8, 20 / 8);
     circle(this.x + 460 / 8, this.y + 140 / 8, 20 / 8);
-  },
-};
+  }
+}
 
 export { character };

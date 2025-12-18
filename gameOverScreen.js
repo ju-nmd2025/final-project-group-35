@@ -1,4 +1,4 @@
-export let gameOverScreen = {
+export default class gameOverScreen {
   buttonX: 200,
   buttonY: 370,
   buttonW: 200,
@@ -30,7 +30,7 @@ export let gameOverScreen = {
       this.buttonX + this.buttonW / 2,
       this.buttonY + this.buttonH / 2
     );
-  },
+  }
 
   isButtonClicked(mouseX, mouseY) {
     return (
@@ -39,7 +39,7 @@ export let gameOverScreen = {
       mouseY > this.buttonY &&
       mouseY < this.buttonY + this.buttonH
     );
-  },
-};
+  }
+}
 
 export { gameOverScreen };

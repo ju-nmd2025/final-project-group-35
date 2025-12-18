@@ -1,4 +1,4 @@
-export let gravity = {
+export default class gravity = {
   apply(character) {
     character.vy += character.gravity;
     character.y += character.vy;
