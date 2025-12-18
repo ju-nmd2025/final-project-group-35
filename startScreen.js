@@ -1,10 +1,10 @@
-export let startScreen = {
-  buttonX: 200,
-  buttonY: 370,
-  buttonW: 200,
-  buttonH: 60,
+export default class StartScreen {
+  buttonX = 200;
+  buttonY = 370;
+  buttonW = 200;
+  buttonH = 60;
 
-  draw: function (width, height) {
+  draw() {
     background(0, 150, 200);
 
     // Draw title
@@ -25,16 +25,16 @@ export let startScreen = {
       this.buttonX + this.buttonW / 2,
       this.buttonY + this.buttonH / 2
     );
-  },
+  }
 
-  isButtonClicked: function (mouseX, mouseY) {
+  isButtonClicked() {
     return (
       mouseX > this.buttonX &&
       mouseX < this.buttonX + this.buttonW &&
       mouseY > this.buttonY &&
       mouseY < this.buttonY + this.buttonH
     );
-  },
-};
+  }
+}
 
-export { startScreen };
+export { StartScreen };

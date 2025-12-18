@@ -32,4 +32,4 @@ export default class Gravity {
   }
 }
 
-export { gravity };
+export { Gravity };

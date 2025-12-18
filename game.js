@@ -1,4 +1,4 @@
-import { character } from "./character.js";
+import Character from "./character.js";
 import { gravity } from "./gravity.js";
 import { movement } from "./movement.js";
 import { platformGenerator } from "./platformGenerator.js";
@@ -43,6 +43,8 @@ function setup() {
   createCanvas(600, 800);
   floorY = getFloorY();
 }
+
+window.setup = setup;
 
 function draw() {
   if (!gameStarted) {
@@ -170,8 +172,6 @@ function updateScore() {
 
   prevY = character.y;
 }
-
-window.setup = setup;
 
 window.draw = draw;
 

@@ -42,4 +42,4 @@ export default class GameOverScreen {
   }
 }
 
-export { GSameOverScreen };
+export { GameOverScreen };
