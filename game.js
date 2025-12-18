@@ -4,9 +4,6 @@ import { movement } from "./movement.js";
 import { platformGenerator } from "./platformGenerator.js";
 import { gameOverScreen } from "./gameOverScreen.js";
 import { startScreen } from "./startScreen.js";
-import { platform } from "./platform.js";
-
-
 
 // Game state
 let gameStarted = false;
@@ -20,21 +17,15 @@ let maxScore = 0;
 
 let prevY = null;
 
-
-
-
-
 function restartGame(width) {
   character.init(floorY, width);
   platformGenerator.init(floorY - 100);
   platforms = platformGenerator.createInitialPlatforms(character, width);
 
-  score= 0;
-prevY = character.y;
+  score = 0;
+  prevY = character.y;
   return platforms;
 }
-
-
 
 function getFloorY() {
   return floorY;
@@ -57,22 +48,15 @@ function draw() {
   if (!gameStarted) {
     startScreen.draw(width, height);
   } else if (gameOver) {
-
     if (score > maxScore) {
       maxScore = score;
     }
-    
-    
+
     gameOverScreen.draw(width, height);
-    
   } else {
     background(100, 100, 100);
-  
 
     if (!Array.isArray(platforms)) platforms = [];
-
-
-  
 
     character.draw(character.y);
     for (let p of platforms) {
@@ -84,7 +68,6 @@ function draw() {
     for (let p of platforms) gravity.handlePlatformCollision(character, p);
 
     platforms = platforms.filter((p) => !p.toRemove);
-
 
     let onPlatform = false;
     for (let p of platforms) {
@@ -108,10 +91,9 @@ function draw() {
 
     movePlatforms();
     updateScore();
-   fill ("black");
+    fill("black");
     textSize(24);
     text(score, 30, 20);
-  
   }
 }
 
@@ -132,16 +114,20 @@ function mouseClicked() {
   }
 }
 
-
 function movePlatforms() {
   // only run while the game is active
-  if (!gameStarted || gameOver || !Array.isArray(platforms) || platforms.length === 0) return;
+  if (
+    !gameStarted ||
+    gameOver ||
+    !Array.isArray(platforms) ||
+    platforms.length === 0
+  )
+    return;
   if (typeof width !== "number" || typeof height !== "number") return;
 
   const speed = character.y < 600 ? 9 : 0; // move platforms down only when character is near top
   platforms.forEach((p) => {
     p.y += speed;
-   
   });
 
   // recycle platforms that moved off the bottom by moving them above the highest platform
@@ -149,10 +135,12 @@ function movePlatforms() {
   for (let i = 0; i < platforms.length; i++) {
     const p = platforms[i];
     if (p.y > height && p.y !== 700) {
-      const minSpawnY = Math.max (-200, topY -150);
-      const maxSpawnY = topY -90;
+      const minSpawnY = Math.max(-200, topY - 150);
+      const maxSpawnY = topY - 90;
       p.y = minSpawnY + Math.random() * (maxSpawnY - minSpawnY);
-      p.x = Math.random() * Math.max(0, width - (p.w || platformGenerator.platformWidth));
+      p.x =
+        Math.random() *
+        Math.max(0, width - (p.w || platformGenerator.platformWidth));
 
       if (p.moving) {
         p.originalX = p.x;
@@ -174,13 +162,13 @@ function movePlatforms() {
 }
 
 function updateScore() {
-if (prevY === null) prevY = character.y;
+  if (prevY === null) prevY = character.y;
 
-const deltaUp = Math.max (0, prevY - character.y);
+  const deltaUp = Math.max(0, prevY - character.y);
 
-score += Math.floor (deltaUp);
+  score += Math.floor(deltaUp);
 
-prevY = character.y;
+  prevY = character.y;
 }
 
 window.setup = setup;
@@ -188,5 +176,5 @@ window.setup = setup;
 window.draw = draw;
 
 window.addEventListener("keydown", function (event) {
-    keyIsDown();
+  keyIsDown();
 });

@@ -1,4 +1,4 @@
-export default class movement = {
+export default class Movement {
   apply(character) {
     if (keyIsDown(LEFT_ARROW)) {
       character.x -= 10;
@@ -13,7 +13,7 @@ export default class movement = {
     if (character.x > 600) {
       character.x = -character.w;
     }
-  },
-};
+  }
+}
 
-export { movement };
+export { Movement };

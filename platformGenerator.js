@@ -1,55 +1,51 @@
-import { character } from "./character.js";
-import { platform } from "./platform.js";
+import character from "./character.js";
+import platform from "./platform.js";
 
-export default class platformGenerator {
-  platformWidth: 100,
-  platformHeight: 20,
+export default class PlatformGenerator {
+  platformWidth = 100;
+  platformHeight = 20;
 
   // horizontal spacing
-  minHorizontalGap: 40,
+  minHorizontalGap = 40;
 
   // vertical spacing range
-  minVerticalGap: 80,
-  maxVerticalGap: 90,
+  minVerticalGap = 80;
+  maxVerticalGap = 90;
 
   // last Y-level
-  lastPlatformY: null,
+  lastPlatformY = null;
 
   init(startY) {
     this.lastPlatformY = startY;
-  },
+  }
 
-  createInitialPlatforms(character, width) {
+  createInitialPlatforms(Character, width) {
     let platforms = [];
     //platform under character at y=700 (floor level)
     platforms.push({
       ...platform,
-      x: character.x - this.platformWidth / 2,
+      x: Character.x - this.platformWidth / 2,
       y: 700, // Fixed at floor level
       w: this.platformWidth,
       h: this.platformHeight,
       disappearing: false,
       moving: false,
       isGreenMoving: false,
-      
-    
+
       draw(screenY) {
-       push();
-       fill ("blue");
+        push();
+        fill("blue");
         rect(this.x, this.y, this.w, this.h);
         pop();
-        },
-        move(){
-          return;
-        }
-
+      },
+      move() {
+        return;
+      },
     });
     // generate more
     this.generatePlatforms(character.y, width, platforms);
     return platforms;
-  },
-
-  
+  }
 
   generatePlatforms(characterY, width, platforms) {
     // choose a starting x
@@ -81,20 +77,23 @@ export default class platformGenerator {
         let tries = 0;
         while (!placed && tries < maxTries) {
           let candidateX = minX + Math.random() * (maxX - minX);
-          
+
           let overlaps = platforms.some((p) => {
-           const verticalDist = Math.abs(p.y - platformY);
-           // far apart vertically -> no overlap
-           if (verticalDist > this.maxVerticalGap) return false;
-           const pLeft = p.x;
+            const verticalDist = Math.abs(p.y - platformY);
+            // far apart vertically -> no overlap
+            if (verticalDist > this.maxVerticalGap) return false;
+            const pLeft = p.x;
             const pRight = p.x + (p.w || this.platformWidth);
             const cLeft = candidateX;
             const cRight = candidateX + this.platformWidth;
 
-           const verticalBuffer = this.platformHeight + 10; // treat this as "very close"
+            const verticalBuffer = this.platformHeight + 10; // treat this as "very close"
             if (verticalDist < verticalBuffer) {
               // require horizontal gap when very close vertically
-              return !(cRight + this.minHorizontalGap <= pLeft || cLeft >= pRight + this.minHorizontalGap);
+              return !(
+                cRight + this.minHorizontalGap <= pLeft ||
+                cLeft >= pRight + this.minHorizontalGap
+              );
             }
 
             // if moderately close vertically, just avoid direct horizontal overlap
@@ -105,12 +104,11 @@ export default class platformGenerator {
             return false;
           });
 
+          if (!overlaps) {
+            const isGreenMoving = Math.random() < 0.2;
+            const isDisappearing = !isGreenMoving && Math.random() < 0.2;
+            const isMoving = isGreenMoving;
 
-          if(!overlaps){
-          const isGreenMoving = Math.random() < 0.2;
-          const isDisappearing = !isGreenMoving && Math.random() < 0.2;
-          const isMoving = isGreenMoving 
-         
             platforms.push({
               ...platform,
               x: candidateX,
@@ -118,16 +116,16 @@ export default class platformGenerator {
               w: this.platformWidth,
               h: this.platformHeight,
               disappearing: isDisappearing,
-              moving : isMoving,
+              moving: isMoving,
               isGreenMoving: isGreenMoving,
               moveDirection: 1,
               originalX: candidateX,
-              moveSpeed: isMoving ? (1 + Math.random() * 2) : 0,
-              moveRange: isMoving ? (50 + Math.random() * 100) : 0,
-             
+              moveSpeed: isMoving ? 1 + Math.random() * 2 : 0,
+              moveRange: isMoving ? 50 + Math.random() * 100 : 0,
+
               draw(screenY) {
                 push();
-            if (this.isGreenMoving) {
+                if (this.isGreenMoving) {
                   fill("green");
                 } else if (this.disappearing) {
                   fill("red");
@@ -138,7 +136,7 @@ export default class platformGenerator {
                 pop();
               },
               move() {
-                if(!this.moving) return;
+                if (!this.moving) return;
                 this.x += this.moveSpeed * this.moveDirection;
                 if (this.x > this.originalX + this.moveRange) {
                   this.x = this.originalX + this.moveRange;
@@ -148,7 +146,7 @@ export default class platformGenerator {
                   this.x = this.originalX - this.moveRange;
                   this.moveDirection = 1;
                 }
-              }
+              },
             });
             characterX = candidateX;
             placed = true;
@@ -157,16 +155,12 @@ export default class platformGenerator {
           tries++;
         }
 
-        
-
-        
-
         // fallback placement
         if (!placed) {
           let fallbackX = minX + Math.random() * (maxX - minX);
-         const isGreenMoving = Math.random() < 0.2;
+          const isGreenMoving = Math.random() < 0.2;
           const isDisappearing = !isGreenMoving && Math.random() < 0.2;
-          const isMoving = isGreenMoving 
+          const isMoving = isGreenMoving;
           platforms.push({
             ...platform,
             x: fallbackX,
@@ -174,14 +168,14 @@ export default class platformGenerator {
             w: this.platformWidth,
             h: this.platformHeight,
             disappearing: isDisappearing,
-             moving: isMoving,
-             isGreenMoving: isGreenMoving,
-             originalX: fallbackX,
+            moving: isMoving,
+            isGreenMoving: isGreenMoving,
+            originalX: fallbackX,
             moveDirection: 1,
-            moveSpeed: isMoving ? (1 + Math.random() * 2) : 0,
-            moveRange: isMoving ? (40 + Math.random() * 80) : 0,
+            moveSpeed: isMoving ? 1 + Math.random() * 2 : 0,
+            moveRange: isMoving ? 40 + Math.random() * 80 : 0,
             draw(screenY) {
-               push();
+              push();
               if (this.isGreenMoving) {
                 fill("green");
               } else if (this.disappearing) {
@@ -192,7 +186,7 @@ export default class platformGenerator {
               rect(this.x, this.y, this.w, this.h);
               pop();
             },
-             move() {
+            move() {
               if (!this.moving) return;
               this.x += this.moveSpeed * this.moveDirection;
               if (this.x > this.originalX + this.moveRange) {
@@ -213,13 +207,11 @@ export default class platformGenerator {
     }
 
     this.lastPlatformY = currentY;
-  },
+  }
 
   cleanPlatforms(platforms, cameraY) {
     return platforms.filter((p) => p.y > cameraY - 200);
-  },
+  }
+}
 
-
-};
-
-export { platformGenerator };
+export { PlatformGenerator };

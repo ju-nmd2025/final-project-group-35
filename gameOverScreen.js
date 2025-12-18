@@ -1,8 +1,8 @@
-export default class gameOverScreen {
-  buttonX: 200,
-  buttonY: 370,
-  buttonW: 200,
-  buttonH: 60,
+export default class GameOverScreen {
+  buttonX = 200;
+  buttonY = 370;
+  buttonW = 200;
+  buttonH = 60;
 
   draw(width, height) {
     // Draw game over screen
@@ -16,8 +16,8 @@ export default class gameOverScreen {
 
     fill(255);
     textSize(24);
-    text(`score:${score}`,width / 2, height / 2 -100);
-    text(`max score:${maxScore}`,width / 2, height / 2 );
+    text(`score:${score}`, width / 2, height / 2 - 100);
+    text(`max score:${maxScore}`, width / 2, height / 2);
     // Draw restart button
     fill(255);
     rect(this.buttonX, this.buttonY, this.buttonW, this.buttonH);
@@ -42,4 +42,4 @@ export default class gameOverScreen {
   }
 }
 
-export { gameOverScreen };
+export { GSameOverScreen };

@@ -1,11 +1,11 @@
-export default class character {
-  x: 260,
-  y: 250,
-  w: 80,
-  h: 75,
-  vy: 0,
-  gravity: 0.5,
-  onGround: false,
+export default class Character {
+  x = 260;
+  y = 250;
+  w = 80;
+  h = 75;
+  vy = 0;
+  gravity = 0.5;
+  onGround = false;
 
   init(floorY, width) {
     this.x = width / 2 - this.w / 2; // Center horizontally
@@ -32,4 +32,4 @@ export default class character {
   }
 }
 
-export { character };
+export { Character };
