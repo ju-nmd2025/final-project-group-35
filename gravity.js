@@ -33,3 +33,5 @@ export let gravity = {
     }
   },
 };
+
+export { gravity };

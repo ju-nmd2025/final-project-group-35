@@ -36,3 +36,5 @@ export let startScreen = {
     );
   },
 };
+
+export { startScreen };

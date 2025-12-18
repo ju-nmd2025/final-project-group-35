@@ -222,4 +222,4 @@ export let platformGenerator = {
 
 };
 
- 
+export { platformGenerator };

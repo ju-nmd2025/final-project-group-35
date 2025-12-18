@@ -32,4 +32,4 @@ export let character = {
   },
 };
 
-
+export { character };

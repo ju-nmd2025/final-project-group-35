@@ -15,3 +15,5 @@ export let movement = {
     }
   },
 };
+
+export { movement };

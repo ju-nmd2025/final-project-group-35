@@ -41,3 +41,5 @@ export let gameOverScreen = {
     );
   },
 };
+
+export { gameOverScreen };
