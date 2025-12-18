@@ -3,7 +3,7 @@ import { gravity } from "./gravity.js";
 import { movement } from "./movement.js";
 import { platformGenerator } from "./platformGenerator.js";
 import { gameOverScreen } from "./gameOverScreen.js";
-import startScreen from "./startScreen.js";
+import { startScreen } from "./startScreen.js";
 import { platform } from "./platform.js";
 
 
@@ -186,10 +186,6 @@ prevY = character.y;
 window.setup = setup;
 
 window.draw = draw;
-
-window.addEventListener("click", function (event) {
-    mousePressed();
-});
 
 window.addEventListener("keydown", function (event) {
     keyIsDown();
