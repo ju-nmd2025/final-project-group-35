@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream
 export default class Movement {
+=======
+// Hanterar tangenttryckningar
+export let movement = {
+>>>>>>> Stashed changes
   apply(character) {
     if (keyIsDown(LEFT_ARROW)) {
       character.x -= 10;
@@ -6,10 +11,11 @@ export default class Movement {
     if (keyIsDown(RIGHT_ARROW)) {
       character.x += 10;
     }
-    // Wrap around screen
+    // Gå ut till vänster → kom in från höger
     if (character.x + character.w < 0) {
       character.x = 600;
     }
+    // Gå ut till höger → kom in från vänster
     if (character.x > 600) {
       character.x = -character.w;
     }

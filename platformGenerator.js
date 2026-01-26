@@ -1,10 +1,17 @@
+<<<<<<< Updated upstream
 import character from "./character.js";
 import platform from "./platform.js";
+=======
+// Skapar och uppdaterar plattformar: storlekar, avstånd, generering och städning
+import { character } from "./character.js";
+import { platform } from "./platform.js";
+>>>>>>> Stashed changes
 
 export default class PlatformGenerator {
   platformWidth = 100;
   platformHeight = 20;
 
+<<<<<<< Updated upstream
   // horizontal spacing
   minHorizontalGap = 40;
 
@@ -14,18 +21,40 @@ export default class PlatformGenerator {
 
   // last Y-level
   lastPlatformY = null;
+=======
+  // Minsta horisontella mellanrum mellan plattformar
+  minHorizontalGap: 40,
 
+  // Vertikala mellanrum (min och max)
+  minVerticalGap: 80,
+  maxVerticalGap: 90,
+
+  // Senaste Y-nivån där vi skapade en plattform
+  lastPlatformY: null,
+>>>>>>> Stashed changes
+
+  // Nollställer generatorn med en start-y
   init(startY) {
     this.lastPlatformY = startY;
   }
 
+<<<<<<< Updated upstream
   createInitialPlatforms(Character, width) {
+=======
+  // Skapa de första plattformarna, inklusive en vid golvet under gubben
+  createInitialPlatforms(character, width) {
+>>>>>>> Stashed changes
     let platforms = [];
-    //platform under character at y=700 (floor level)
+    // Plattform under spelaren på y=700 (golvnivå)
     platforms.push({
       ...platform,
+<<<<<<< Updated upstream
       x: Character.x - this.platformWidth / 2,
       y: 700, // Fixed at floor level
+=======
+      x: character.x - this.platformWidth / 2,
+      y: 700, // Fast på grundnivån
+>>>>>>> Stashed changes
       w: this.platformWidth,
       h: this.platformHeight,
       disappearing: false,
@@ -42,27 +71,33 @@ export default class PlatformGenerator {
         return;
       },
     });
-    // generate more
+    // Skapa fler plattformar ovanför
     this.generatePlatforms(character.y, width, platforms);
     return platforms;
+<<<<<<< Updated upstream
   }
 
+=======
+  },
+
+  // Generera fler plattformar uppåt från senaste nivån
+>>>>>>> Stashed changes
   generatePlatforms(characterY, width, platforms) {
-    // choose a starting x
+    // Välj start-x utifrån första plattformen eller mitten
     let characterX = platforms.length > 0 ? platforms[0].x : width / 2;
-    // sensible lastPlatformY
+    // Sätt rimligt startvärde om det saknas
     if (this.lastPlatformY == null) {
-      // generate above character
+      // Skapa ovanför gubben
       this.lastPlatformY = characterY + 600;
     }
     let currentY = this.lastPlatformY;
 
-    // keep generating
+    // Fortsätt skapa tills vi nått tillräckligt högt upp
     while (currentY > characterY - 400) {
-      // spawn batch
+      // Skapa en grupp plattformar
       let numPlatforms = Math.floor(Math.random() * 3) + 2; // 2..4
       for (let i = 0; i < numPlatforms && currentY > characterY - 400; i++) {
-        // random vertical gap
+        // Slumpa vertikalt mellanrum
         let gap =
           this.minVerticalGap +
           Math.random() * (this.maxVerticalGap - this.minVerticalGap);
@@ -71,7 +106,7 @@ export default class PlatformGenerator {
         let minX = Math.max(0, characterX - 150);
         let maxX = Math.min(width - this.platformWidth, characterX + 150);
 
-        // non-overlapping x
+        // Försök hitta x som inte krockar för nära andra plattformar
         let placed = false;
         let maxTries = 12;
         let tries = 0;
@@ -80,23 +115,33 @@ export default class PlatformGenerator {
 
           let overlaps = platforms.some((p) => {
             const verticalDist = Math.abs(p.y - platformY);
+<<<<<<< Updated upstream
             // far apart vertically -> no overlap
+=======
+            // Långt ifrån vertikalt: ingen kollision att bry sig om
+>>>>>>> Stashed changes
             if (verticalDist > this.maxVerticalGap) return false;
             const pLeft = p.x;
             const pRight = p.x + (p.w || this.platformWidth);
             const cLeft = candidateX;
             const cRight = candidateX + this.platformWidth;
 
+<<<<<<< Updated upstream
             const verticalBuffer = this.platformHeight + 10; // treat this as "very close"
             if (verticalDist < verticalBuffer) {
               // require horizontal gap when very close vertically
+=======
+            const verticalBuffer = this.platformHeight + 10; // betraktas som väldigt nära
+            if (verticalDist < verticalBuffer) {
+              // Kräv horisontellt mellanrum om det är väldigt nära i höjdled
+>>>>>>> Stashed changes
               return !(
                 cRight + this.minHorizontalGap <= pLeft ||
                 cLeft >= pRight + this.minHorizontalGap
               );
             }
 
-            // if moderately close vertically, just avoid direct horizontal overlap
+            // Om ganska nära i höjdled: undvik direkt överlapp
             if (verticalDist < this.minVerticalGap) {
               return !(cRight <= pLeft || cLeft >= pRight);
             }
@@ -105,8 +150,13 @@ export default class PlatformGenerator {
           });
 
           if (!overlaps) {
+<<<<<<< Updated upstream
             const isGreenMoving = Math.random() < 0.2;
             const isDisappearing = !isGreenMoving && Math.random() < 0.2;
+=======
+            const isGreenMoving = Math.random() < 0.2; // gröna plattformar rör sig
+            const isDisappearing = !isGreenMoving && Math.random() < 0.2; // röda försvinner
+>>>>>>> Stashed changes
             const isMoving = isGreenMoving;
 
             platforms.push({
@@ -136,7 +186,11 @@ export default class PlatformGenerator {
                 pop();
               },
               move() {
+<<<<<<< Updated upstream
                 if (!this.moving) return;
+=======
+                if (!this.moving) return; // bara om plattformen ska röra sig
+>>>>>>> Stashed changes
                 this.x += this.moveSpeed * this.moveDirection;
                 if (this.x > this.originalX + this.moveRange) {
                   this.x = this.originalX + this.moveRange;
@@ -155,7 +209,11 @@ export default class PlatformGenerator {
           tries++;
         }
 
+<<<<<<< Updated upstream
         // fallback placement
+=======
+        // Om vi inte hittade plats: lägg en nödlösningsplattform
+>>>>>>> Stashed changes
         if (!placed) {
           let fallbackX = minX + Math.random() * (maxX - minX);
           const isGreenMoving = Math.random() < 0.2;
@@ -209,9 +267,15 @@ export default class PlatformGenerator {
     this.lastPlatformY = currentY;
   }
 
+  // Ta bort plattformar som ligger för långt ovanför kameran
   cleanPlatforms(platforms, cameraY) {
     return platforms.filter((p) => p.y > cameraY - 200);
+<<<<<<< Updated upstream
   }
 }
 
 export { PlatformGenerator };
+=======
+  },
+};
+>>>>>>> Stashed changes

@@ -1,17 +1,31 @@
+<<<<<<< Updated upstream
 export default class Gravity {
   apply(character) {
     character.vy += character.gravity;
     character.y += character.vy;
   }
+=======
+// gravitation och kollisioner mot plattformar
+export let gravity = {
+  // tyngdkraft och flyttar gubben vertikalt
+  apply(character) {
+    character.vy += character.gravity;
+    character.y += character.vy;
+  },
+  // Studsa på plattformen
+>>>>>>> Stashed changes
   handleFloorCollision(character, floorY) {
     if (character.y + character.h >= floorY) {
       character.y = floorY - character.h;
       character.vy = character.jumpStrength;
     }
+<<<<<<< Updated upstream
   }
+=======
+  },
+  // Landning på plattform uppifrån
+>>>>>>> Stashed changes
   handlePlatformCollision(character, platform) {
-    // Only check downward collision (landing on top of platform)
-    // Character can pass through platforms from below and from the sides
     if (
       character.x + character.w > platform.x &&
       character.x < platform.x + platform.w &&
@@ -19,6 +33,10 @@ export default class Gravity {
       character.y + character.h >= platform.y &&
       character.y + character.h - character.vy < platform.y
     ) {
+<<<<<<< Updated upstream
+=======
+      // plattformen försvinner, ta bort och hoppa över studs
+>>>>>>> Stashed changes
       if (platform.disappearing) {
         console.log("Platform disappeared!");
         platform.toRemove = true;
@@ -26,6 +44,10 @@ export default class Gravity {
         return;
       }
 
+<<<<<<< Updated upstream
+=======
+      // Placera gubben ovanpå plattformen
+>>>>>>> Stashed changes
       character.y = platform.y - character.h;
       character.vy = character.jumpStrength;
     }

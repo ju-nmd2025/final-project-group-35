@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 export default class Character {
   x = 260;
   y = 250;
@@ -6,7 +7,19 @@ export default class Character {
   vy = 0;
   gravity = 0.5;
   onGround = false;
+=======
+// Gubbens data och beteende
+export let character = {
+  x: 260,
+  y: 250,
+  w: 80,
+  h: 75,
+  vy: 0,
+  gravity: 0.5,
+  onGround: false,
+>>>>>>> Stashed changes
 
+  // Ställer in startläge utifrån golvets höjd och canvas bredd
   init(floorY, width) {
     this.x = width / 2 - this.w / 2; // Center horizontally
     this.y = floorY - this.h - 50; // Start 50 pixels above the floor/platform
@@ -16,6 +29,7 @@ export default class Character {
     this.maxVy = 15;
   }
 
+  // Ritar gubben
   draw() {
     fill(200, 180, 0);
     strokeWeight(1);
@@ -29,7 +43,12 @@ export default class Character {
     fill(0);
     circle(this.x + 160 / 8, this.y + 140 / 8, 20 / 8);
     circle(this.x + 460 / 8, this.y + 140 / 8, 20 / 8);
+<<<<<<< Updated upstream
   }
 }
 
 export { Character };
+=======
+  },
+};
+>>>>>>> Stashed changes
