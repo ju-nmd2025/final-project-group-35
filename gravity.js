@@ -1,19 +1,20 @@
 // gravitation och kollisioner mot plattformar
-export default class Gravity {
+export let gravity = {
   // tyngdkraft och flyttar gubben vertikalt
   apply(character) {
     character.vy += character.gravity;
     character.y += character.vy;
-  }
+  },
   // Studsa på plattformen
   handleFloorCollision(character, floorY) {
     if (character.y + character.h >= floorY) {
       character.y = floorY - character.h;
       character.vy = character.jumpStrength;
     }
-  }
+  },
   // Landning på plattform uppifrån
   handlePlatformCollision(character, platform) {
+    // Character can pass through platforms from below and from the sides
     if (
       character.x + character.w > platform.x && // gubben överlappar plattformen horisontellt från vänster
       character.x < platform.x + platform.w && // gubben överlappar plattformen horisontellt från höger
@@ -33,7 +34,5 @@ export default class Gravity {
       character.y = platform.y - character.h;
       character.vy = character.jumpStrength;
     }
-  }
-}
-
-export { Gravity };
+  },
+};

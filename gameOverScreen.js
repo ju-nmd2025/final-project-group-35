@@ -1,8 +1,8 @@
-export default class GameOverScreen {
-  buttonX = 200;
-  buttonY = 370;
-  buttonW = 200;
-  buttonH = 60;
+export let gameOverScreen = {
+  buttonX: 200,
+  buttonY: 370,
+  buttonW: 200,
+  buttonH: 60,
 
   draw(width, height) {
     // Bakgrund och rubrik
@@ -30,7 +30,7 @@ export default class GameOverScreen {
       this.buttonX + this.buttonW / 2,
       this.buttonY + this.buttonH / 2,
     );
-  }
+  },
 
   // om klickade på restart-knappen
   isButtonClicked(mouseX, mouseY) {
@@ -40,7 +40,5 @@ export default class GameOverScreen {
       mouseY > this.buttonY &&
       mouseY < this.buttonY + this.buttonH
     );
-  }
-}
-
-export { GameOverScreen };
+  },
+};

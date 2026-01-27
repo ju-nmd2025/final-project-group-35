@@ -1,5 +1,5 @@
 // Hanterar tangenttryckningar
-export default class Movement {
+export let movement = {
   apply(character) {
     if (keyIsDown(LEFT_ARROW)) {
       character.x -= 10;
@@ -15,7 +15,5 @@ export default class Movement {
     if (character.x > 600) {
       character.x = -character.w;
     }
-  }
-}
-
-export { Movement };
+  },
+};

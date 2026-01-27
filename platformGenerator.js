@@ -1,33 +1,31 @@
-// Skapar och uppdaterar plattformar: storlekar, avstånd, generering och städning
-import character from "./character.js";
-import platform from "./platform.js";
+import { character } from "./character.js";
+import { platform } from "./platform.js";
 
-export default class PlatformGenerator {
-  platformWidth = 100;
-  platformHeight = 20;
+export let platformGenerator = {
+  platformWidth: 100,
+  platformHeight: 20,
 
   // Minsta horisontella mellanrum mellan plattformar
-  minHorizontalGap = 40;
+  minHorizontalGap: 40,
 
   // Vertikala mellanrum (min och max)
-  minVerticalGap = 80;
-  maxVerticalGap = 90;
+  minVerticalGap: 80,
+  maxVerticalGap: 90,
 
   // Senaste Y-nivån där vi skapade en plattform
-  lastPlatformY = null;
+  lastPlatformY: null,
 
-  // Nollställer generatorn med en start-y
   init(startY) {
     this.lastPlatformY = startY;
-  }
+  },
 
   // Skapa de första plattformarna, inklusive en vid golvet under gubben
-  createInitialPlatforms(Character, width) {
+  createInitialPlatforms(character, width) {
     let platforms = [];
     // Plattform under spelaren på y=700 (golvnivå)
     platforms.push({
       ...platform,
-      x: Character.x - this.platformWidth / 2,
+      x: character.x - this.platformWidth / 2,
       y: 700, // Fixed at floor level
       // Fast på grundnivån
       w: this.platformWidth,
@@ -49,7 +47,7 @@ export default class PlatformGenerator {
     // Skapa fler plattformar ovanför
     this.generatePlatforms(character.y, width, platforms);
     return platforms;
-  }
+  },
 
   // Generera fler plattformar uppåt från senaste nivån
   generatePlatforms(characterY, width, platforms) {
@@ -147,11 +145,13 @@ export default class PlatformGenerator {
               move() {
                 if (!this.moving) return; // bara om plattformen ska röra sig
                 this.x += this.moveSpeed * this.moveDirection; // uppdatera x baserat på hastighet och riktning
-                if (this.x > this.originalX + this.moveRange) { // om plattformen går för långt åt höger
+                if (this.x > this.originalX + this.moveRange) {
+                  // om plattformen går för långt åt höger
                   this.x = this.originalX + this.moveRange; // begränsa till max position
                   this.moveDirection = -1; // byt riktning till vänster
                 }
-                if (this.x < this.originalX - this.moveRange) { // om plattformen går för långt åt vänster
+                if (this.x < this.originalX - this.moveRange) {
+                  // om plattformen går för långt åt vänster
                   this.x = this.originalX - this.moveRange; // begränsa till min position
                   this.moveDirection = 1; // byt riktning till höger
                 }
@@ -197,11 +197,13 @@ export default class PlatformGenerator {
             move() {
               if (!this.moving) return; // bara om plattformen ska röra sig
               this.x += this.moveSpeed * this.moveDirection; // uppdatera x baserat på hastighet och riktning
-              if (this.x > this.originalX + this.moveRange) { // om plattformen går för långt åt höger
+              if (this.x > this.originalX + this.moveRange) {
+                // om plattformen går för långt åt höger
                 this.x = this.originalX + this.moveRange; // begränsa till max position
                 this.moveDirection = -1; // byt riktning till vänster
               }
-              if (this.x < this.originalX - this.moveRange) { // om plattformen går för långt åt vänster
+              if (this.x < this.originalX - this.moveRange) {
+                // om plattformen går för långt åt vänster
                 this.x = this.originalX - this.moveRange; // begränsa till min position
                 this.moveDirection = 1; // byt riktning till höger
               }
@@ -215,12 +217,10 @@ export default class PlatformGenerator {
     }
 
     this.lastPlatformY = currentY;
-  }
+  },
 
   // Ta bort plattformar som ligger för långt ovanför kameran
   cleanPlatforms(platforms, cameraY) {
     return platforms.filter((p) => p.y > cameraY - 200);
-  }
-}
-
-export { PlatformGenerator };
+  },
+};

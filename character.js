@@ -1,22 +1,22 @@
 // Gubbens data och beteende
-export default class Character {
-  x = 260;
-  y = 250;
-  w = 80;
-  h = 75;
-  vy = 0;
-  gravity = 0.5;
-  onGround = false;
+export let character = {
+  x: 260,
+  y: 250,
+  w: 80,
+  h: 75,
+  vy: 0,
+  gravity: 0.5,
+  onGround: false,
 
   // Ställer in startläge utifrån golvets höjd och canvas bredd
   init(floorY, width) {
-    this.x = width / 2 - this.w / 2; // Centrera
-    this.y = floorY - this.h - 50; // Starta 50 pixlar över floor
+    this.x = width / 2 - this.w / 2; // Centrera horizontally
+    this.y = floorY - this.h - 50; // Start 50 pixels above the floor/platform
     this.vy = 0;
     this.gravity = 1.5;
     this.jumpStrength = -25;
     this.maxVy = 15;
-  }
+  },
 
   // Ritar gubben
   draw() {
@@ -32,7 +32,5 @@ export default class Character {
     fill(0);
     circle(this.x + 160 / 8, this.y + 140 / 8, 20 / 8);
     circle(this.x + 460 / 8, this.y + 140 / 8, 20 / 8);
-  }
-}
-
-export { Character };
+  },
+};
