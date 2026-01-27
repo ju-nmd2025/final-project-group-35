@@ -137,7 +137,6 @@ function mouseClicked() {
 
 // Bara när spelet är igång ska vi flytta plattformar
 function movePlatforms() {
-  // only run while the game is active
   if (
     !gameStarted ||
     gameOver ||
@@ -147,12 +146,12 @@ function movePlatforms() {
     return;
   if (typeof width !== "number" || typeof height !== "number") return;
 
-  const speed = character.y < 600 ? 9 : 0; // move platforms down only when character is near top
+  const speed = character.y < 600 ? 9 : 0; // flytta plattformar nedåt endast när gubben är nära toppen
   platforms.forEach((p) => {
     p.y += speed;
   });
 
-  // recycle platforms that moved off the bottom by moving them above the highest platform
+  // återanvänd plattformar som har flyttat sig utanför botten genom att flytta dem ovanför den högsta plattformen
   const topY = Math.min(...platforms.map((p) => p.y));
   for (let i = 0; i < platforms.length; i++) {
     const p = platforms[i];
@@ -171,15 +170,13 @@ function movePlatforms() {
     }
   }
 
-  // ensure there are always platforms generated above the current top
   // Se till att det alltid finns fler plattformar ovanför att hoppa till
-  // if the highest platform is below the generator threshold, tell the generator to extend upward
   const generatorThreshold = character.y - 300;
   if (topY > generatorThreshold) {
-    // make the generator start from the current top and add more above it
+    // Skapa fler plattformar ovanför
     platformGenerator.lastPlatformY = topY;
     platformGenerator.generatePlatforms(character.y, width, platforms);
-    // optionally trim any far-away platforms
+    // Trimma listan med plattformar för att ta bort onödiga
     platforms = platformGenerator.cleanPlatforms(platforms, 0);
   }
 }

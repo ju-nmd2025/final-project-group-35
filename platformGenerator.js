@@ -83,7 +83,6 @@ export let platformGenerator = {
 
           let overlaps = platforms.some((p) => {
             const verticalDist = Math.abs(p.y - platformY);
-            // far apart vertically -> no overlap
             // Långt ifrån vertikalt: ingen kollision att bry sig om
             if (verticalDist > this.maxVerticalGap) return false;
             const pLeft = p.x;
@@ -91,10 +90,9 @@ export let platformGenerator = {
             const cLeft = candidateX;
             const cRight = candidateX + this.platformWidth;
 
-            const verticalBuffer = this.platformHeight + 10; // treat this as "very close"
+            const verticalBuffer = this.platformHeight + 10; // behandla detta som "väldigt nära"
             // betraktas som väldigt nära
             if (verticalDist < verticalBuffer) {
-              // require horizontal gap when very close vertically
               // Kräv horisontellt mellanrum om det är väldigt nära i höjdled
               return !(
                 cRight + this.minHorizontalGap <= pLeft ||

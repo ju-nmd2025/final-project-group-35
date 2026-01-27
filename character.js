@@ -10,7 +10,7 @@ export let character = {
 
   // Ställer in startläge utifrån golvets höjd och canvas bredd
   init(floorY, width) {
-    this.x = width / 2 - this.w / 2; // Centrera horizontally
+    this.x = width / 2 - this.w / 2; // Centrera horizontellt
     this.y = floorY - this.h - 50; // Start 50 pixels above the floor/platform
     this.vy = 0;
     this.gravity = 1.5;

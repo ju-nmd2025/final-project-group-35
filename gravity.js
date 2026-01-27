@@ -12,9 +12,8 @@ export let gravity = {
       character.vy = character.jumpStrength;
     }
   },
-  // Landning på plattform uppifrån
   handlePlatformCollision(character, platform) {
-    // Character can pass through platforms from below and from the sides
+    // Gubben kan på plattformen endast om den faller nedåt
     if (
       character.x + character.w > platform.x && // gubben överlappar plattformen horisontellt från vänster
       character.x < platform.x + platform.w && // gubben överlappar plattformen horisontellt från höger
