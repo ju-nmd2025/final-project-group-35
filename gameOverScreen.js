@@ -1,17 +1,8 @@
-<<<<<<< Updated upstream
 export default class GameOverScreen {
   buttonX = 200;
   buttonY = 370;
   buttonW = 200;
   buttonH = 60;
-=======
-// Game Over-skärm: visar poäng och restart-knapp
-export let gameOverScreen = {
-  buttonX: 200,
-  buttonY: 370,
-  buttonW: 200,
-  buttonH: 60,
->>>>>>> Stashed changes
 
   draw(width, height) {
     // Bakgrund och rubrik
@@ -27,11 +18,7 @@ export let gameOverScreen = {
     textSize(24);
     text(`score:${score}`, width / 2, height / 2 - 100);
     text(`max score:${maxScore}`, width / 2, height / 2);
-<<<<<<< Updated upstream
-    // Draw restart button
-=======
-    // Restart-knapp
->>>>>>> Stashed changes
+    // Rita restart knappen
     fill(255);
     rect(this.buttonX, this.buttonY, this.buttonW, this.buttonH);
 

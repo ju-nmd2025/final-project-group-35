@@ -3,17 +3,9 @@ import { gravity } from "./gravity.js";
 import { movement } from "./movement.js";
 import { platformGenerator } from "./platformGenerator.js";
 import { gameOverScreen } from "./gameOverScreen.js";
-<<<<<<< Updated upstream
 import { startScreen } from "./startScreen.js";
 
-// Game state
-=======
-import startScreen from "./startScreen.js";
-import { platform } from "./platform.js";
-
-// Spelets läge (har vi startat eller är det slut?)
 // Har spelet startat?
->>>>>>> Stashed changes
 let gameStarted = false;
 // Är spelet slut?
 let gameOver = false;
@@ -31,30 +23,20 @@ let maxScore = 0;
 // Hjälper oss räkna poäng när vi går uppåt
 let prevY = null;
 
-<<<<<<< Updated upstream
-=======
 // Starta om spelet: fixa gubben, gör plattformar och nollställ poäng
->>>>>>> Stashed changes
 function restartGame(width) {
   character.init(floorY, width);
   platformGenerator.init(floorY - 100);
   platforms = platformGenerator.createInitialPlatforms(character, width);
 
-<<<<<<< Updated upstream
-  score = 0;
-=======
   // Nollställ poängen
   score = 0;
   // Spara gubbens höjd för att räkna uppåt-poäng
->>>>>>> Stashed changes
   prevY = character.y;
   return platforms;
 }
 
-<<<<<<< Updated upstream
-=======
 // Hämta golvets höjd
->>>>>>> Stashed changes
 function getFloorY() {
   return floorY;
 }
@@ -75,12 +57,9 @@ function setup() {
   floorY = getFloorY();
 }
 
-<<<<<<< Updated upstream
 window.setup = setup;
 
-=======
 // ritar och uppdaterar spelet
->>>>>>> Stashed changes
 function draw() {
   if (!gameStarted) {
     // Visa startskärmen med knappen om spelet inte har börjat
@@ -91,10 +70,7 @@ function draw() {
       maxScore = score;
     }
 
-<<<<<<< Updated upstream
-=======
     // Visa Game Over-skärmen
->>>>>>> Stashed changes
     gameOverScreen.draw(width, height);
   } else {
     background(100, 100, 100);
@@ -102,10 +78,7 @@ function draw() {
     // Se till att plattformar verkligen är en lista
     if (!Array.isArray(platforms)) platforms = [];
 
-<<<<<<< Updated upstream
-=======
     // Rita gubben
->>>>>>> Stashed changes
     character.draw(character.y);
     for (let p of platforms) {
       // Rita varje plattform och flytta den om den kan röra sig
@@ -120,10 +93,7 @@ function draw() {
     // Ta bort plattformar som ska försvinna
     platforms = platforms.filter((p) => !p.toRemove);
 
-<<<<<<< Updated upstream
-=======
     // Kolla om gubben står på någon plattform just nu
->>>>>>> Stashed changes
     let onPlatform = false;
     for (let p of platforms) {
       if (
@@ -149,11 +119,7 @@ function draw() {
     // Flytta plattformarna, räkna poängen och rita poängen
     movePlatforms();
     updateScore();
-<<<<<<< Updated upstream
-    fill("black");
-=======
     fill("black"); // färgen på texten
->>>>>>> Stashed changes
     textSize(24);
     text(score, 30, 20);
   }
@@ -178,11 +144,7 @@ function mouseClicked() {
 }
 
 function movePlatforms() {
-<<<<<<< Updated upstream
-  // only run while the game is active
-=======
   // Bara när spelet är igång ska vi flytta plattformar
->>>>>>> Stashed changes
   if (
     !gameStarted ||
     gameOver ||
@@ -231,15 +193,6 @@ function movePlatforms() {
 
 // Räkna poäng
 function updateScore() {
-<<<<<<< Updated upstream
-  if (prevY === null) prevY = character.y;
-
-  const deltaUp = Math.max(0, prevY - character.y);
-
-  score += Math.floor(deltaUp);
-
-  prevY = character.y;
-=======
   if (prevY === null) prevY = character.y; // första gången vi sparar höjden
 
   const deltaUp = Math.max(0, prevY - character.y); // hur mycket vi gått upp
@@ -247,7 +200,6 @@ function updateScore() {
   score += Math.floor(deltaUp); // lägg till poäng
 
   prevY = character.y; // spara höjden till nästa gång
->>>>>>> Stashed changes
 }
 
 window.draw = draw;

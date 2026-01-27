@@ -1,4 +1,4 @@
-<<<<<<< Updated upstream
+// Gubbens data och beteende
 export default class Character {
   x = 260;
   y = 250;
@@ -7,22 +7,11 @@ export default class Character {
   vy = 0;
   gravity = 0.5;
   onGround = false;
-=======
-// Gubbens data och beteende
-export let character = {
-  x: 260,
-  y: 250,
-  w: 80,
-  h: 75,
-  vy: 0,
-  gravity: 0.5,
-  onGround: false,
->>>>>>> Stashed changes
 
   // Ställer in startläge utifrån golvets höjd och canvas bredd
   init(floorY, width) {
-    this.x = width / 2 - this.w / 2; // Center horizontally
-    this.y = floorY - this.h - 50; // Start 50 pixels above the floor/platform
+    this.x = width / 2 - this.w / 2; // Centrera
+    this.y = floorY - this.h - 50; // Starta 50 pixlar över floor
     this.vy = 0;
     this.gravity = 1.5;
     this.jumpStrength = -25;
@@ -43,12 +32,7 @@ export let character = {
     fill(0);
     circle(this.x + 160 / 8, this.y + 140 / 8, 20 / 8);
     circle(this.x + 460 / 8, this.y + 140 / 8, 20 / 8);
-<<<<<<< Updated upstream
   }
 }
 
 export { Character };
-=======
-  },
-};
->>>>>>> Stashed changes

@@ -1,17 +1,9 @@
-<<<<<<< Updated upstream
+// Startskärm: visar titel och startknapp
 export default class StartScreen {
   buttonX = 200;
   buttonY = 370;
   buttonW = 200;
   buttonH = 60;
-=======
-// Startskärm: visar titel och startknapp
-export let startScreen = {
-  buttonX: 200,
-  buttonY: 370,
-  buttonW: 200,
-  buttonH: 60,
->>>>>>> Stashed changes
 
   draw() {
     background(0, 150, 200);
@@ -36,12 +28,8 @@ export let startScreen = {
     );
   }
 
-<<<<<<< Updated upstream
-  isButtonClicked() {
-=======
   // Kollar om musens klick ligger inne i knappen
-  isButtonClicked: function (mouseX, mouseY) {
->>>>>>> Stashed changes
+  isButtonClicked() {
     return (
       mouseX > this.buttonX &&
       mouseX < this.buttonX + this.buttonW &&

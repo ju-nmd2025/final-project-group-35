@@ -1,42 +1,27 @@
-<<<<<<< Updated upstream
-export default class Gravity {
-  apply(character) {
-    character.vy += character.gravity;
-    character.y += character.vy;
-  }
-=======
 // gravitation och kollisioner mot plattformar
-export let gravity = {
+export default class Gravity {
   // tyngdkraft och flyttar gubben vertikalt
   apply(character) {
     character.vy += character.gravity;
     character.y += character.vy;
-  },
+  }
   // Studsa på plattformen
->>>>>>> Stashed changes
   handleFloorCollision(character, floorY) {
     if (character.y + character.h >= floorY) {
       character.y = floorY - character.h;
       character.vy = character.jumpStrength;
     }
-<<<<<<< Updated upstream
   }
-=======
-  },
   // Landning på plattform uppifrån
->>>>>>> Stashed changes
   handlePlatformCollision(character, platform) {
     if (
-      character.x + character.w > platform.x &&
-      character.x < platform.x + platform.w &&
-      character.vy > 0 &&
-      character.y + character.h >= platform.y &&
-      character.y + character.h - character.vy < platform.y
+      character.x + character.w > platform.x && // gubben överlappar plattformen horisontellt från vänster
+      character.x < platform.x + platform.w && // gubben överlappar plattformen horisontellt från höger
+      character.vy > 0 && // gubben faller nedåt
+      character.y + character.h >= platform.y && // gubbens botten är på eller under plattformens topp
+      character.y + character.h - character.vy < platform.y // gubben var ovanför plattformen förra frame
     ) {
-<<<<<<< Updated upstream
-=======
       // plattformen försvinner, ta bort och hoppa över studs
->>>>>>> Stashed changes
       if (platform.disappearing) {
         console.log("Platform disappeared!");
         platform.toRemove = true;
@@ -44,10 +29,7 @@ export let gravity = {
         return;
       }
 
-<<<<<<< Updated upstream
-=======
       // Placera gubben ovanpå plattformen
->>>>>>> Stashed changes
       character.y = platform.y - character.h;
       character.vy = character.jumpStrength;
     }

@@ -1,60 +1,35 @@
-<<<<<<< Updated upstream
+// Skapar och uppdaterar plattformar: storlekar, avstånd, generering och städning
 import character from "./character.js";
 import platform from "./platform.js";
-=======
-// Skapar och uppdaterar plattformar: storlekar, avstånd, generering och städning
-import { character } from "./character.js";
-import { platform } from "./platform.js";
->>>>>>> Stashed changes
 
 export default class PlatformGenerator {
   platformWidth = 100;
   platformHeight = 20;
 
-<<<<<<< Updated upstream
-  // horizontal spacing
+  // Minsta horisontella mellanrum mellan plattformar
   minHorizontalGap = 40;
 
-  // vertical spacing range
+  // Vertikala mellanrum (min och max)
   minVerticalGap = 80;
   maxVerticalGap = 90;
 
-  // last Y-level
-  lastPlatformY = null;
-=======
-  // Minsta horisontella mellanrum mellan plattformar
-  minHorizontalGap: 40,
-
-  // Vertikala mellanrum (min och max)
-  minVerticalGap: 80,
-  maxVerticalGap: 90,
-
   // Senaste Y-nivån där vi skapade en plattform
-  lastPlatformY: null,
->>>>>>> Stashed changes
+  lastPlatformY = null;
 
   // Nollställer generatorn med en start-y
   init(startY) {
     this.lastPlatformY = startY;
   }
 
-<<<<<<< Updated upstream
-  createInitialPlatforms(Character, width) {
-=======
   // Skapa de första plattformarna, inklusive en vid golvet under gubben
-  createInitialPlatforms(character, width) {
->>>>>>> Stashed changes
+  createInitialPlatforms(Character, width) {
     let platforms = [];
     // Plattform under spelaren på y=700 (golvnivå)
     platforms.push({
       ...platform,
-<<<<<<< Updated upstream
       x: Character.x - this.platformWidth / 2,
       y: 700, // Fixed at floor level
-=======
-      x: character.x - this.platformWidth / 2,
-      y: 700, // Fast på grundnivån
->>>>>>> Stashed changes
+      // Fast på grundnivån
       w: this.platformWidth,
       h: this.platformHeight,
       disappearing: false,
@@ -74,14 +49,9 @@ export default class PlatformGenerator {
     // Skapa fler plattformar ovanför
     this.generatePlatforms(character.y, width, platforms);
     return platforms;
-<<<<<<< Updated upstream
   }
 
-=======
-  },
-
   // Generera fler plattformar uppåt från senaste nivån
->>>>>>> Stashed changes
   generatePlatforms(characterY, width, platforms) {
     // Välj start-x utifrån första plattformen eller mitten
     let characterX = platforms.length > 0 ? platforms[0].x : width / 2;
@@ -115,26 +85,19 @@ export default class PlatformGenerator {
 
           let overlaps = platforms.some((p) => {
             const verticalDist = Math.abs(p.y - platformY);
-<<<<<<< Updated upstream
             // far apart vertically -> no overlap
-=======
             // Långt ifrån vertikalt: ingen kollision att bry sig om
->>>>>>> Stashed changes
             if (verticalDist > this.maxVerticalGap) return false;
             const pLeft = p.x;
             const pRight = p.x + (p.w || this.platformWidth);
             const cLeft = candidateX;
             const cRight = candidateX + this.platformWidth;
 
-<<<<<<< Updated upstream
             const verticalBuffer = this.platformHeight + 10; // treat this as "very close"
+            // betraktas som väldigt nära
             if (verticalDist < verticalBuffer) {
               // require horizontal gap when very close vertically
-=======
-            const verticalBuffer = this.platformHeight + 10; // betraktas som väldigt nära
-            if (verticalDist < verticalBuffer) {
               // Kräv horisontellt mellanrum om det är väldigt nära i höjdled
->>>>>>> Stashed changes
               return !(
                 cRight + this.minHorizontalGap <= pLeft ||
                 cLeft >= pRight + this.minHorizontalGap
@@ -150,28 +113,24 @@ export default class PlatformGenerator {
           });
 
           if (!overlaps) {
-<<<<<<< Updated upstream
-            const isGreenMoving = Math.random() < 0.2;
-            const isDisappearing = !isGreenMoving && Math.random() < 0.2;
-=======
             const isGreenMoving = Math.random() < 0.2; // gröna plattformar rör sig
             const isDisappearing = !isGreenMoving && Math.random() < 0.2; // röda försvinner
->>>>>>> Stashed changes
             const isMoving = isGreenMoving;
 
+            // skapa och lägg till plattformen med alla dess egenskaper
             platforms.push({
-              ...platform,
-              x: candidateX,
-              y: platformY,
-              w: this.platformWidth,
-              h: this.platformHeight,
-              disappearing: isDisappearing,
-              moving: isMoving,
-              isGreenMoving: isGreenMoving,
-              moveDirection: 1,
-              originalX: candidateX,
-              moveSpeed: isMoving ? 1 + Math.random() * 2 : 0,
-              moveRange: isMoving ? 50 + Math.random() * 100 : 0,
+              ...platform, // kopiera grundegenskaper från platform
+              x: candidateX, // horisontell position
+              y: platformY, // vertikal position
+              w: this.platformWidth, // bredd
+              h: this.platformHeight, // höjd
+              disappearing: isDisappearing, // om plattformen ska försvinna
+              moving: isMoving, // om plattformen ska röra sig
+              isGreenMoving: isGreenMoving, // om det är en grön rörlig plattform
+              moveDirection: 1, // rörelseriktning (1 eller -1)
+              originalX: candidateX, // ursprunglig x-position för rörelse
+              moveSpeed: isMoving ? 1 + Math.random() * 2 : 0, // hastighet för rörelse
+              moveRange: isMoving ? 50 + Math.random() * 100 : 0, // hur långt plattformen rör sig
 
               draw(screenY) {
                 push();
@@ -186,19 +145,15 @@ export default class PlatformGenerator {
                 pop();
               },
               move() {
-<<<<<<< Updated upstream
-                if (!this.moving) return;
-=======
                 if (!this.moving) return; // bara om plattformen ska röra sig
->>>>>>> Stashed changes
-                this.x += this.moveSpeed * this.moveDirection;
-                if (this.x > this.originalX + this.moveRange) {
-                  this.x = this.originalX + this.moveRange;
-                  this.moveDirection = -1;
+                this.x += this.moveSpeed * this.moveDirection; // uppdatera x baserat på hastighet och riktning
+                if (this.x > this.originalX + this.moveRange) { // om plattformen går för långt åt höger
+                  this.x = this.originalX + this.moveRange; // begränsa till max position
+                  this.moveDirection = -1; // byt riktning till vänster
                 }
-                if (this.x < this.originalX - this.moveRange) {
-                  this.x = this.originalX - this.moveRange;
-                  this.moveDirection = 1;
+                if (this.x < this.originalX - this.moveRange) { // om plattformen går för långt åt vänster
+                  this.x = this.originalX - this.moveRange; // begränsa till min position
+                  this.moveDirection = 1; // byt riktning till höger
                 }
               },
             });
@@ -208,30 +163,25 @@ export default class PlatformGenerator {
           }
           tries++;
         }
-
-<<<<<<< Updated upstream
-        // fallback placement
-=======
         // Om vi inte hittade plats: lägg en nödlösningsplattform
->>>>>>> Stashed changes
         if (!placed) {
           let fallbackX = minX + Math.random() * (maxX - minX);
           const isGreenMoving = Math.random() < 0.2;
           const isDisappearing = !isGreenMoving && Math.random() < 0.2;
           const isMoving = isGreenMoving;
           platforms.push({
-            ...platform,
-            x: fallbackX,
-            y: platformY,
-            w: this.platformWidth,
-            h: this.platformHeight,
-            disappearing: isDisappearing,
-            moving: isMoving,
-            isGreenMoving: isGreenMoving,
-            originalX: fallbackX,
-            moveDirection: 1,
-            moveSpeed: isMoving ? 1 + Math.random() * 2 : 0,
-            moveRange: isMoving ? 40 + Math.random() * 80 : 0,
+            ...platform, // kopiera grundegenskaper från platform
+            x: fallbackX, // horisontell position
+            y: platformY, // vertikal position
+            w: this.platformWidth, // bredd
+            h: this.platformHeight, // höjd
+            disappearing: isDisappearing, // om plattformen ska försvinna
+            moving: isMoving, // om plattformen ska röra sig
+            isGreenMoving: isGreenMoving, // om det är en grön rörlig plattform
+            originalX: fallbackX, // ursprunglig x-position för rörelse
+            moveDirection: 1, // rörelseriktning (1 eller -1)
+            moveSpeed: isMoving ? 1 + Math.random() * 2 : 0, // hastighet för rörelse
+            moveRange: isMoving ? 40 + Math.random() * 80 : 0, // hur långt plattformen rör sig
             draw(screenY) {
               push();
               if (this.isGreenMoving) {
@@ -245,15 +195,15 @@ export default class PlatformGenerator {
               pop();
             },
             move() {
-              if (!this.moving) return;
-              this.x += this.moveSpeed * this.moveDirection;
-              if (this.x > this.originalX + this.moveRange) {
-                this.x = this.originalX + this.moveRange;
-                this.moveDirection = -1;
+              if (!this.moving) return; // bara om plattformen ska röra sig
+              this.x += this.moveSpeed * this.moveDirection; // uppdatera x baserat på hastighet och riktning
+              if (this.x > this.originalX + this.moveRange) { // om plattformen går för långt åt höger
+                this.x = this.originalX + this.moveRange; // begränsa till max position
+                this.moveDirection = -1; // byt riktning till vänster
               }
-              if (this.x < this.originalX - this.moveRange) {
-                this.x = this.originalX - this.moveRange;
-                this.moveDirection = 1;
+              if (this.x < this.originalX - this.moveRange) { // om plattformen går för långt åt vänster
+                this.x = this.originalX - this.moveRange; // begränsa till min position
+                this.moveDirection = 1; // byt riktning till höger
               }
             },
           });
@@ -270,12 +220,7 @@ export default class PlatformGenerator {
   // Ta bort plattformar som ligger för långt ovanför kameran
   cleanPlatforms(platforms, cameraY) {
     return platforms.filter((p) => p.y > cameraY - 200);
-<<<<<<< Updated upstream
   }
 }
 
 export { PlatformGenerator };
-=======
-  },
-};
->>>>>>> Stashed changes

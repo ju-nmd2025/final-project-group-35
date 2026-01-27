@@ -1,9 +1,5 @@
-<<<<<<< Updated upstream
-export default class Movement {
-=======
 // Hanterar tangenttryckningar
-export let movement = {
->>>>>>> Stashed changes
+export default class Movement {
   apply(character) {
     if (keyIsDown(LEFT_ARROW)) {
       character.x -= 10;
