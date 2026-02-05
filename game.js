@@ -4,26 +4,61 @@ import { movement } from "./movement.js";
 import { platformGenerator } from "./platformGenerator.js";
 import { gameOverScreen } from "./gameOverScreen.js";
 import startScreen from "./startScreen.js";
-import { platform } from "./platform.js";
+import { scoreTracker } from "./scoreTracker.js";
 
-// Game state
-// Har spelet startat?
-let gameStarted = false;
-// Är spelet slut?
-let gameOver = false;
+class GameState {
+  constructor() {
+    // Håller reda på om spelet är igång eller slut
+    this.started = false;
+    this.over = false;
+  }
+
+  start() {
+    this.started = true;
+    this.over = false;
+  }
+
+  end() {
+    this.over = true;
+  }
+
+  reset() {
+    this.started = false;
+    this.over = false;
+  }
+}
+
+const gameState = new GameState();
+
+class CollisionChecker {
+  isOnPlatform(character, platformList) {
+    // Kollar om gubben står på någon plattform
+    for (let p of platformList) {
+      if (
+        character.x + character.w > p.x &&
+        character.x < p.x + p.w &&
+        character.y + character.h >= p.y - 5 &&
+        character.y + character.h <= p.y + p.h + 5
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  fellOff(character, sceneHeight, onPlatform) {
+    // Kollar om gubben har ramlat under skärmen
+    return character.y + character.h > sceneHeight + 5 && !onPlatform;
+  }
+}
+
+const collisionChecker = new CollisionChecker();
 
 // Var golvet är (som marken längst ner)
 let floorY = 700;
 // Lista med alla plattformar att hoppa på
 let platforms;
-
-// Poäng just nu
-let score = 0;
-// Bästa poängen vi någonsin fått
-let maxScore = 0;
-
-// Hjälper oss räkna poäng när vi går uppåt
-let prevY = null;
 
 // Starta om spelet: fixa gubben, gör plattformar och nollställ poäng
 function restartGame(width) {
@@ -32,42 +67,23 @@ function restartGame(width) {
   platforms = platformGenerator.createInitialPlatforms(character, width);
 
   // Nollställ poängen
-  score = 0;
-  // Spara gubbens höjd för att räkna uppåt-poäng
-  prevY = character.y;
-  return platforms;
-}
-
-// Hämta golvets höjd
-function getFloorY() {
-  return floorY;
-}
-
-// Byt ut plattformarna mot en ny lista
-function setPlatforms(newPlatforms) {
-  platforms = newPlatforms;
-}
-
-// Hämta listan med plattformar
-function getPlatforms() {
+  scoreTracker.reset(character.y);
   return platforms;
 }
 
 // skapa canvas
 function setup() {
   createCanvas(600, 800);
-  floorY = getFloorY();
+  floorY = 700;
 }
 
 // ritar och uppdaterar spelet
 function draw() {
-  if (!gameStarted) {
+  if (!gameState.started) {
     startScreen.draw(width, height);
-  } else if (gameOver) {
-    if (score > maxScore) {
-      // Spara bästa poängen när spelet är slut
-      maxScore = score;
-    }
+  } else if (gameState.over) {
+    // Spara bästa poängen när spelet är slut
+    scoreTracker.updateMaxIfHigher();
 
     // Visa Game Over-skärmen
     gameOverScreen.draw(width, height);
@@ -88,23 +104,12 @@ function draw() {
 
     platforms = platforms.filter((p) => !p.toRemove);
 
-    let onPlatform = false;
-    for (let p of platforms) {
-      if (
-        character.x + character.w > p.x &&
-        character.x < p.x + p.w &&
-        character.y + character.h >= p.y - 5 &&
-        character.y + character.h <= p.y + p.h + 5
-      ) {
-        onPlatform = true;
-        break;
-      }
-    }
+    const onPlatform = collisionChecker.isOnPlatform(character, platforms);
 
     // Om gubben ramlar för långt ner och inte står på en plattform
-    if (character.y + character.h > height + 5 && !onPlatform) {
+    if (collisionChecker.fellOff(character, height, onPlatform)) {
       console.log("Game Over! Character fell off!");
-      gameOver = true;
+      gameState.end();
     }
 
     movement.apply(character);
@@ -113,24 +118,22 @@ function draw() {
     updateScore();
     fill("black");
     textSize(24);
-    text(score, 30, 20);
+    text(scoreTracker.score, 30, 20);
   }
 }
 
 // starta eller börja om spelet med musen
 function mouseClicked() {
-  if (!gameStarted) {
+  if (!gameState.started) {
     if (startScreen.isButtonClicked(mouseX, mouseY)) {
       console.log("Start button clicked! Starting game...");
-      gameStarted = true;
-      gameOver = false;
+      gameState.start();
       platforms = restartGame(width);
     }
-  } else if (gameOver) {
+  } else if (gameState.over) {
     if (gameOverScreen.isButtonClicked(mouseX, mouseY)) {
       console.log("Restart button clicked! Returning to start screen...");
-      gameStarted = false;
-      gameOver = false;
+      gameState.reset();
     }
   }
 }
@@ -138,8 +141,8 @@ function mouseClicked() {
 // Bara när spelet är igång ska vi flytta plattformar
 function movePlatforms() {
   if (
-    !gameStarted ||
-    gameOver ||
+    !gameState.started ||
+    gameState.over ||
     !Array.isArray(platforms) ||
     platforms.length === 0
   )
@@ -183,11 +186,5 @@ function movePlatforms() {
 
 // Räkna poäng
 function updateScore() {
-  if (prevY === null) prevY = character.y;
-
-  const deltaUp = Math.max(0, prevY - character.y);
-
-  score += Math.floor(deltaUp);
-
-  prevY = character.y;
+  scoreTracker.update(character.y);
 }

@@ -1,3 +1,5 @@
+import { scoreTracker } from "./scoreTracker.js";
+
 export let gameOverScreen = {
   buttonX: 200,
   buttonY: 370,
@@ -16,8 +18,8 @@ export let gameOverScreen = {
 
     fill(255);
     textSize(24);
-    text(`score:${score}`, width / 2, height / 2 - 100);
-    text(`max score:${maxScore}`, width / 2, height / 2);
+    text("score: " + scoreTracker.score, width / 2, height / 2 - 100);
+    text("max score: " + scoreTracker.maxScore, width / 2, height / 2);
     // Rita restart knappen
     fill(255);
     rect(this.buttonX, this.buttonY, this.buttonW, this.buttonH);
