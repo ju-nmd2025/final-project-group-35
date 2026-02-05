@@ -58,10 +58,7 @@ function draw() {
     startScreen.draw(width, height);
   } else if (gameOver) {
 
-    if (score > maxScore) {
-      maxScore = score;
-    }
-    
+   
     
     gameOverScreen.draw(width, height);
     
